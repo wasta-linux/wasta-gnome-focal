@@ -1,0 +1,205 @@
+# z_12_wasta-gnome.gschema.override
+#
+#   If same key overridden in 2 files, "last wins" regarding filenames
+#       (so a "z_10_*" filename would win over a "10_*" filename)
+#
+#   After modifying these .override files, reload with:
+#       glib-compile-schemas /usr/share/glib-2.0/schemas/
+#
+#   2020-07-22 ndm: initial settings for focal.
+#
+# ==============================================================================
+
+### GNOME Shell ###
+[org.gnome.shell]
+favorite-apps = ['firefox.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'gnome-ubuntu-panel.desktop']
+
+# Open dash to app list.
+[org.gnome.mutter]
+overlay-key = ''
+[org.gnome.shell.keybindings]
+toggle-application-view = ['Super_L']
+
+# Categorize app list.
+#   - Any new "folder" has to be listed in "folder-children" and have its own schema.
+#   - The folders are created in a dconf profile in /etc/dconf/profile/
+[org.gnome.desktop.app-folders]
+folder-children = ['Graphics', 'AudioVideo', 'Network', 'Office', 'Development', 'System', 'Settings', 'Utility', 'Game', 'Education', 'Wasta']
+
+# Move dock to bottom of screen.
+[org.gnome.shell.extensions.dash-to-dock:ubuntu]
+dock-position = 'BOTTOM'
+# Put "apps" button at the "top" (left) end of dock.
+show-apps-at-top = true
+# Reduce dock transparency.
+transparency-mode = 'FIXED'
+# Use lines instead of dots to indicate open apps.
+running-indicator-style = 'SEGMENTED'
+dash-max-icon-size = 36
+
+
+### GNOME Desktop ###
+[org.gnome.desktop.background]
+show-desktop-icons = true
+#picture-uri = 'file:///usr/share/backgrounds/wasta/Blue_box_number_2_by_orb9220-wasta.jpg'
+picture-uri = 'file:///usr/share/backgrounds/wasta/fabien-bazanegue-unsplash-wasta.jpg'
+
+[org.gnome.desktop.interface]
+clock-show-date = true
+clock-format = '12h'
+# cursor-theme 'Yaru'
+cursor-theme = 'DMZ-White'
+font-name = 'Ubuntu 11'
+##gtk-overlay-scrollbars = false
+# gtk-theme = 'Yaru'
+gtk-theme = 'Arc-Darker'
+# icon-theme = 'Yaru'
+icon-theme = 'ePapirus'
+
+[org.gnome.desktop.lockdown]
+disable-user-switching = true
+
+[org.gnome.desktop.media-handling]
+automount = true
+automount-open = false
+
+[org.gnome.desktop.privacy]
+remember-recent-files = true
+recent-files-max-age = 30
+
+[org.gnome.desktop.screensaver]
+##ask-for-away-message = false
+##date-format = '%B %e, %Y'
+##font-date = 'Ubuntu 24'
+##font-message = 'Ubuntu 14'
+##font-time = 'Ubuntu 64'
+lock-enabled = false
+picture-options = 'zoom'
+picture-uri = 'file:///usr/share/backgrounds/wasta/fabien-bazanegue-unsplash-wasta.jpg'
+##time-format = '%l:%M %p'
+user-switch-enabled = false
+
+### Desktop Session ###
+##settings-daemon-uses-logind = true
+##session-manager-uses-logind = true
+
+[org.gnome.desktop.sound]
+event-sounds = false
+#theme-name = 'Yaru'
+theme-name = 'freedesktop'
+##volume-sound-enabled = true
+##volume-sound-file = '/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga'
+
+# Make Alt-Tab switch between windows instead of apps.
+[org.gnome.desktop.wm.keybindings]
+switch-applications = []
+switch-applications-backward = []
+switch-windows = ['<Alt>Tab']
+switch-windows-backward = ['<Alt><Shift>Tab']
+
+[org.gnome.desktop.wm.preferences]
+button-layout = ':minimize,maximize,close'
+theme = 'Arc-Darker'
+titlebar-font = 'Ubuntu Bold 11'
+
+### Sounds ###
+##close-enabled = false
+##login-enabled = false
+##logout-enabled = false
+##map-enabled = false
+##maximize-enabled = false
+##minimize-enabled = false
+##plug-enabled = true
+##plug-file = '/usr/share/sounds/freedesktop/stereo/device-added.oga'
+##switch-enabled = false
+##tile-enabled = false
+##unmaximize-enabled = false
+##unplug-enabled = true
+##unplug-file = '/usr/share/sounds/freedesktop/stereo/device-removed.oga'
+
+
+### Desktop Peripherals Touchpad ###
+[org.gnome.desktop.peripherals.input-devices]
+disable-while-typing = true
+natural-scroll = false
+tap-to-click = true
+scrolling-method = 'two-finger-scrolling'
+
+
+### Settings-Daemon  ###
+[org.gnome.settings-daemon.plugins.media-keys]
+home = ['<Ctrl><Shift>h']
+
+[org.gnome.settings-daemon.plugins.power]
+button-power = 'interactive'
+critical-battery-action = 'suspend'
+lid-close-suspend-with-external-monitor = true
+##lock-on-suspend = false
+percentage-action = 5
+percentage-critical = 10
+percentage-low = 15
+##sleep-display-battery = 1200
+sleep-inactive-battery-timeout = 1800
+use-time-for-policy = false
+
+##[org.gnome.settings-daemon.plugins.xsettings]
+##buttons-have-icons = false
+##menus-have-icons = true
+
+### Theme ###
+##name = 'Arc-Dark-Wasta'
+##symbolic-relative-size = 0.67
+
+### Freedesktop IBus ###
+[org.desktop.ibus.general]
+use-system-keyboard-layout = false
+
+[org.desktop.ibus.general.hotkey]
+triggers = ['<Control>space']
+
+[org.desktop.ibus.panel]
+custom-font = 'Ubuntu 11'
+xkb-icon-rgba = '#FFFFFF'
+use-custom-font = true
+
+# Sort folders first (Nautilus refers to FileChooser dialog).
+[org.gtk.Settings.FileChooser]
+sort-directories-first = true
+
+
+### Desktop Config ###
+[org.gnome.shell.extensions.desktop-icons]
+##computer-icon-visible = false
+##desktop-layout = 'true::false'
+##font = 'Ubuntu 10'
+show-home = false
+##network-icon-visible = false
+show-trash = false
+##use-desktop-grid = false
+##volumes-visible = true
+icon-size = 'small'
+
+
+### Nautilus Preferences ###
+[org.gnome.nautilus.preferences]
+#default-folder-viewer = 'list-view'
+# Bulk renamer.
+# TODO: This doesn't exist in 20.04. Is there another way?
+# bulk-rename-tool = b'thunar --bulk-rename'
+##context-menus-show-all-actions = true
+##date-format = 'iso'
+default-sort-order = 'name'
+show-delete-permanently = false
+##ignore-view-metadata = true
+show-hidden-files = false
+##show-location-entry = false
+##show-reload-icon-toolbar = true
+# thumbnail-limit is measured in B in Nemo, MB in nautilus
+thumbnail-limit = uint64 4
+
+[org.gnome.nautilus.window-state]
+sidebar-width = 165
+##side-pane-view = 'places'
+start-with-sidebar = true
+##start-with-status-bar = true
+

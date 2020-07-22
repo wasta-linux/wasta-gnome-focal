@@ -1,0 +1,56 @@
+[org/gnome/desktop/app-folders/folders/Graphics]
+name = 'Graphics.directory'
+translate = true
+categories = ['Graphics']
+
+[org/gnome/desktop/app-folders/folders/AudioVideo]
+name = 'AudioVideo.directory'
+translate = true
+categories = ['AudioVideo']
+
+[org/gnome/desktop/app-folders/folders/Network]
+name = 'Network.directory'
+translate = true
+categories = ['Network']
+
+[org/gnome/desktop/app-folders/folders/Office]
+name = 'Office.directory'
+translate = true
+categories = ['Office']
+
+[org/gnome/desktop/app-folders/folders/Development]
+name = 'Development.directory'
+translate = true
+categories = ['Development']
+excluded-apps = ['org.gnome.meld.desktop']
+
+[org/gnome/desktop/app-folders/folders/System]
+name = 'System.directory'
+translate = true
+categories = ['System', 'System-Tools']
+
+[org/gnome/desktop/app-folders/folders/Settings]
+name = 'Settings.directory'
+translate = true
+categories = ['Settings']
+
+[org/gnome/desktop/app-folders/folders/Utility]
+name = 'Utility.directory'
+translate = true
+categories = ['Utility', 'X-GNOME-Utilities']
+
+[org/gnome/desktop/app-folders/folders/Game]
+name = 'Game.directory'
+translate = true
+categories = ['Game']
+
+[org/gnome/desktop/app-folders/folders/Education]
+name = 'Education.directory'
+translate = true
+categories = ['Education']
+
+[org/gnome/desktop/app-folders/folders/Wasta]
+name = 'Wasta'
+translate = true
+categories = ['Wasta']
+apps = ['wasta-backup.desktop', 'wasta-menus-apps.desktop', 'wasta-menus.desktop', 'wasta-offline-setup.desktop', 'wasta-offline-snap-setup.desktop', 'wasta-reset.desktop', 'wasta-reset.desktop', 'wasta-resources.desktop', 'wasta-snap-manager.desktop']

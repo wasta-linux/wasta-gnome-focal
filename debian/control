@@ -1,0 +1,14 @@
+Source: wasta-gnome-focal
+Section: utils
+Priority: optional
+Maintainer: Nate Marti <nate_marti@sil.org>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 4.4.0
+Homepage: https://github.com/wasta-linux/wasta-gnome-focal
+
+Package: wasta-gnome-focal
+Architecture: all
+Depends: gnome-shell, nautilus, wasta-backgrounds, wasta-core-focal, wasta-multidesktop-focal, wasta-papirus, ${misc:Depends}
+Recommends: blueberry, bookletimposer, wasta-vertex-ubuntu
+Description: Wasta-Linux GNOME for Ubuntu 20.04 Focal
+ Wasta-Linux 20.04 Focal GNOME core adjustments.

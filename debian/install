@@ -1,0 +1,4 @@
+install-files/dconf                     etc
+install-files/lightdm.conf.d            etc/lightdm
+install-files/schemas                   usr/share/glib-2.0
+wasta-gnome                             usr/share
