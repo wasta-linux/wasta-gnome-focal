@@ -4,7 +4,7 @@
 # wasta-gnome-postinst.sh
 #
 #   This script is automatically run by the postinst configure step on
-#       installation of wasta-cinnamon-*. It can be manually re-run, but
+#       installation of wasta-gnome-*. It can be manually re-run, but
 #       is only intended to be run at package installation.
 #
 #   2020-07-22 ndm: initial script
@@ -34,6 +34,31 @@ echo
 
 # Setup Directory for later reference
 DIR=/usr/share/wasta-gnome
+
+# ------------------------------------------------------------------------------
+# Set app-grid icon
+# ------------------------------------------------------------------------------
+echo
+echo "*** Setting Wasta main menu icon"
+echo
+
+os_version=$(cat /etc/os-release | grep VERSION_CODENAME | cut -d '=' -f2)
+if [[ $os_version == 'bionic' ]]; then
+    default_theme=Adwaita
+elif [[ $os_version == 'focal' ]]; then
+    default_theme=Yaru
+else
+    # OS not supported.
+    echo "Unknown version '$os_version'. Not setting main menu icon."
+fi
+new_icon=/usr/share/icons/hicolor/scalable/emblems/wasta-linux-main-menu.svg
+old_icon=/usr/share/icons/$default_theme/scalable/actions/view-app-grid-symbolic.svg
+# Backup original icon if not already backed up.
+if [[ ! -e $old_icon.orig ]]; then
+    cp $old_icon{,.orig}
+fi
+# Copy new icon to original icon location and name.
+cp $new_icon $old_icon
 
 # ------------------------------------------------------------------------------
 # Dconf / Gsettings Default Value adjustments

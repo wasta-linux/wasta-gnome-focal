@@ -12,7 +12,7 @@
 
 ### GNOME Shell ###
 [org.gnome.shell]
-favorite-apps = ['firefox.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'gnome-ubuntu-panel.desktop']
+favorite-apps = ['firefox.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'gnome-info-overview-panel.desktop']
 
 # Open dash to app list.
 [org.gnome.mutter]
@@ -26,16 +26,18 @@ toggle-application-view = ['Super_L']
 [org.gnome.desktop.app-folders]
 folder-children = ['Graphics', 'AudioVideo', 'Network', 'Office', 'Development', 'System', 'Settings', 'Utility', 'Game', 'Education', 'Wasta']
 
-# Move dock to bottom of screen.
-[org.gnome.shell.extensions.dash-to-dock:ubuntu]
+[org.gnome.shell.extensions.dash-to-dock]
 dock-position = 'BOTTOM'
 # Put "apps" button at the "top" (left) end of dock.
 show-apps-at-top = true
+dash-max-icon-size = 36
+
+[org.gnome.shell.extensions.dash-to-dock:ubuntu]
 # Reduce dock transparency.
 transparency-mode = 'FIXED'
+background-opacity = 0.9
 # Use lines instead of dots to indicate open apps.
 running-indicator-style = 'SEGMENTED'
-dash-max-icon-size = 36
 
 
 ### GNOME Desktop ###
