@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=GNOME
 Comment=This session logs you into GNOME
-Exec=env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=gnome
+Exec=env GNOME_SHELL_SESSION_MODE=wasta /usr/bin/gnome-session --systemd --session=gnome
 TryExec=/usr/bin/gnome-shell
 Type=Application
 DesktopNames=GNOME
