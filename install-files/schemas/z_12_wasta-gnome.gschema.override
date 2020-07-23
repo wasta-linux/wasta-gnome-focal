@@ -27,12 +27,17 @@ toggle-application-view = ['Super_L']
 folder-children = ['Graphics', 'AudioVideo', 'Network', 'Office', 'Development', 'System', 'Settings', 'Utility', 'Game', 'Education', 'Wasta']
 
 [org.gnome.shell.extensions.dash-to-dock]
+autohide = true
+dock-fixed = true
 dock-position = 'BOTTOM'
+extend-height = true
+intellihide = false
 # Put "apps" button at the "top" (left) end of dock.
 show-apps-at-top = true
+show-trash = false
 dash-max-icon-size = 36
 
-[org.gnome.shell.extensions.dash-to-dock:ubuntu]
+#[org.gnome.shell.extensions.dash-to-dock:ubuntu]
 # Reduce dock transparency.
 transparency-mode = 'FIXED'
 background-opacity = 0.9
@@ -55,8 +60,8 @@ font-name = 'Ubuntu 11'
 ##gtk-overlay-scrollbars = false
 # gtk-theme = 'Yaru'
 gtk-theme = 'Arc-Darker'
-# icon-theme = 'Yaru'
-icon-theme = 'ePapirus'
+icon-theme = 'Yaru'
+#icon-theme = 'ePapirus'
 
 [org.gnome.desktop.lockdown]
 disable-user-switching = true
@@ -101,7 +106,8 @@ switch-windows-backward = ['<Alt><Shift>Tab']
 
 [org.gnome.desktop.wm.preferences]
 button-layout = ':minimize,maximize,close'
-theme = 'Arc-Darker'
+theme = 'Yaru'
+#theme = 'Arc-Darker'
 titlebar-font = 'Ubuntu Bold 11'
 
 ### Sounds ###
