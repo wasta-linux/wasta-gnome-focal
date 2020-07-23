@@ -2,4 +2,4 @@
 
 ### To-Do:
 - [x] Make theming and styling independent of Ubuntu's Yaru theme.
-- [ ] Make Wasta's GNOME session independent of Ubunut's as much as possible.
+- [ ] Make Wasta's GNOME session independent of Ubuntu's as much as possible.
