@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Wasta Ubuntu
+Comment=This session logs you into Wasta Ubuntu
+Exec=env GNOME_SHELL_SESSION_MODE=wasta-ubuntu /usr/bin/gnome-session --systemd --session=wasta
+TryExec=/usr/bin/gnome-shell
+Type=Application
+DesktopNames=wasta-ubuntu:GNOME
+X-GDM-SessionRegisters=true
+X-Ubuntu-Gettext-Domain=gnome-session-3.0

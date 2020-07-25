@@ -41,7 +41,7 @@ scrolling-method = 'two-finger-scrolling'
 recent-files-max-age = 30
 
 [org.gnome.desktop.session]
-session-name = 'gnome'
+session-name = 'wasta'
 
 [org.gnome.desktop.sound]
 event-sounds = false
@@ -128,7 +128,7 @@ antialiasing = 'rgba'
 
 
 ### GNOME Shell & Extensions ###
-[org.gnome.shell.extensions.dash-to-dock]
+[org.gnome.shell.extensions.dash-to-dock:wasta-ubuntu]
 autohide = true
 background-opacity = 0.9
 click-action = 'focus-or-previews'
@@ -151,7 +151,25 @@ transparency-mode = 'FIXED'
 # Use lines instead of dots to indicate open apps.
 running-indicator-style = 'SEGMENTED'
 
-[org.gnome.shell.extensions.desktop-icons]
+[org.gnome.shell.extensions.dash-to-panel:wasta]
+appicon-margin = 4
+dot-color-1 = '#1e90ff'
+dot-color-2 = '#1e90ff'
+dot-color-3 = '#1e90ff'
+dot-color-4 = '#1e90ff'
+dot-color-override = true
+focus-highlight-color = '#1e90ff'
+scroll-panel-action = 'CHANGE_VOLUME'
+show-apps-icon-file = '/usr/share/icons/hicolor/scalable/emblems/wasta-linux-main-menu.svg'
+show-favorites-all-monitors = false
+show-showdesktop-hover = true
+show-status-menu-all-monitors = false
+trans-panel-opacity = 0.8
+trans-use-custom-opacity = true
+window-preview-show-title = false
+window-preview-size = 180
+
+[org.gnome.shell.extensions.desktop-icons:wasta-ubuntu]
 show-home = false
 show-trash = false
 icon-size = 'small'
