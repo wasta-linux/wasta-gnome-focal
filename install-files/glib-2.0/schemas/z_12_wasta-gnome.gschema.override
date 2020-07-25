@@ -134,7 +134,6 @@ background-opacity = 0.9
 click-action = 'focus-or-previews'
 custom-theme-shrink = true
 custom-theme-customize-running-dots = true
-#custom-theme-running-dots-color = '#e95420'
 custom-theme-running-dots-color = '#1e90ff'
 custom-theme-running-dots-border-color = '#1e90ff'
 dash-max-icon-size = 36
@@ -149,25 +148,11 @@ show-trash = false
 # Reduce dock transparency.
 transparency-mode = 'FIXED'
 # Use lines instead of dots to indicate open apps.
-running-indicator-style = 'SEGMENTED'
+running-indicator-style = 'METRO'
 
 [org.gnome.shell.extensions.dash-to-panel:wasta]
-appicon-margin = 4
-dot-color-1 = '#1e90ff'
-dot-color-2 = '#1e90ff'
-dot-color-3 = '#1e90ff'
-dot-color-4 = '#1e90ff'
-dot-color-override = true
-focus-highlight-color = '#1e90ff'
-scroll-panel-action = 'CHANGE_VOLUME'
-show-apps-icon-file = '/usr/share/icons/hicolor/scalable/emblems/wasta-linux-main-menu.svg'
-show-favorites-all-monitors = false
-show-showdesktop-hover = true
-show-status-menu-all-monitors = false
-trans-panel-opacity = 0.8
-trans-use-custom-opacity = true
-window-preview-show-title = false
-window-preview-size = 180
+# These overrides are found in the extension's local folder:
+# /usr/share/gnome-shell/extensions/dash-to-panel@jderose.githubcom/schemas/
 
 [org.gnome.shell.extensions.desktop-icons:wasta-ubuntu]
 show-home = false

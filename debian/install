@@ -1,7 +1,7 @@
-install-files/dconf                             etc
-install-files/gnome-session		        usr/share
-install-files/gnome-shell		        usr/share
-install-files/lightdm.conf.d                    etc/lightdm
-install-files/glib-2.0                          usr/share
-install-files/xsessions		        usr/share
-wasta-gnome                                     usr/share
+install-files/dconf             etc
+install-files/glib-2.0          usr/share
+install-files/gnome-session	usr/share
+install-files/gnome-shell	usr/share
+install-files/lightdm.conf.d    etc/lightdm
+install-files/xsessions	usr/share
+wasta-gnome                     usr/share

@@ -8,7 +8,7 @@ Homepage: https://github.com/wasta-linux/wasta-gnome-focal
 
 Package: wasta-gnome-focal
 Architecture: all
-Depends: gnome-shell, nautilus, wasta-backgrounds, wasta-core-focal, wasta-multidesktop-focal, wasta-papirus, ${misc:Depends}
+Depends: gnome-shell, gnome-shell-extension-appindicator, gnome-shell-extension-dash-to-panel, gnome-shell-extension-desktop-icons, gnome-shell-extension-ubuntu-dock, nautilus, wasta-backgrounds, wasta-core-focal, wasta-multidesktop-focal, wasta-papirus, ${misc:Depends}
 Recommends: bookletimposer, wasta-vertex-ubuntu
 Description: Wasta-Linux GNOME for Ubuntu 20.04 Focal
- Wasta-Linux 20.04 Focal GNOME core adjustments.
+ Wasta-Linux 20.04 Focal GNOME core configuration.
