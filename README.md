@@ -4,6 +4,7 @@ Make Wasta-Linux on GNOME feel comfortable for those comfortable accustomed to W
 
 ### To-Do:
 - [ ] Decide between dash-to-dock or dash-to-panel.
+- [ ] Add Wasta's context menu options to Nautilus
 - [ ] Make notifications show up in bottom right corner.
 - [x] Make app indicator icons appear in dash-to-panel.
 - [x] Implement per-desktop gschema overrides.
