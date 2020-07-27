@@ -30,46 +30,46 @@ use-custom-font = true
 [org.gnome.desktop.app-folders]
 folder-children = ['Graphics', 'AudioVideo', 'Network', 'Office', 'Development', 'System', 'Settings', 'Utility', 'Game', 'Education', 'Wasta']
 
-[org.gnome.desktop.peripherals.input-devices]
+[org.gnome.desktop.peripherals.input-devices:wasta]
 click-method = 'default'
 disable-while-typing = true
-natural-scroll = false
+natural-scroll = true
 tap-to-click = true
 scrolling-method = 'two-finger-scrolling'
 
-[org.gnome.desktop.privacy]
+[org.gnome.desktop.privacy:wasta]
 recent-files-max-age = 30
 
-[org.gnome.desktop.session]
+[org.gnome.desktop.session:wasta]
 session-name = 'wasta'
 
-[org.gnome.desktop.sound]
+[org.gnome.desktop.sound:wasta]
 event-sounds = false
 theme-name = 'freedesktop'
 
 # Make Alt-Tab switch between windows instead of apps.
-[org.gnome.desktop.wm.keybindings]
+[org.gnome.desktop.wm.keybindings:wasta]
 show-desktop = ['<Primary><Super>d', '<Primary><Alt>d', '<Super>d']
 switch-applications = []
 switch-applications-backward = []
 switch-windows = ['<Alt>Tab']
 switch-windows-backward = ['<Alt><Shift>Tab']
 
-[org.gnome.desktop.wm.preferences]
+[org.gnome.desktop.wm.preferences:wasta]
 button-layout = ':minimize,maximize,close'
 action-middle-click-titlebar = 'lower'
 
-[org.gnome.eog.ui]
+[org.gnome.eog.ui:wasta]
 sidebar = false
 
-[org.gnome.Epiphany]
+[org.gnome.Epiphany:wasta]
 default-search = 'DuckDuckGo'
 
 
 ### Mutter Preferences ###
-[org.gnome.mutter]
+[org.gnome.mutter:wasta]
 attach-modal-dialogs = true
-edge-tiling = true
+edge-tiling = false
 dynamic-workspaces = true
 workspaces-only-on-primary = true
 focus-change-on-pointer-rest = true
@@ -77,20 +77,19 @@ focus-change-on-pointer-rest = true
 
 ### Nautilus Preferences ###
 # Sort folders first (Nautilus refers to FileChooser dialog).
-[org.gtk.Settings.FileChooser]
+[org.gtk.Settings.FileChooser:wasta]
 sort-directories-first = true
 
-[org.gnome.nautilus.desktop]
+[org.gnome.nautilus.desktop:wasta]
 home-icon-visible = false
 
-[org.gnome.nautilus.icon-view]
+[org.gnome.nautilus.icon-view:wasta]
 default-zoom-level = 'small'
 
-[org.gnome.nautilus.preferences]
+[org.gnome.nautilus.preferences:wasta]
 # Bulk renamer.
-# TODO: This doesn't exist in 20.04. Is there another way?
+# TODO: This doesn't exist in 20.04. Consider using filemanager-actions for this.
 # bulk-rename-tool = b'thunar --bulk-rename'
-##context-menus-show-all-actions = true
 default-sort-order = 'name'
 open-folder-on-dnd-hover = true
 show-delete-permanently = false
@@ -98,37 +97,33 @@ show-hidden-files = false
 # thumbnail-limit is measured in B in Nemo, MB in nautilus
 thumbnail-limit = uint64 4
 
-[org.gnome.nautilus.window-state]
+[org.gnome.nautilus.window-state:wasta]
 sidebar-width = 165
-##side-pane-view = 'places'
 start-with-sidebar = true
-##start-with-status-bar = true
 
 
 ### Settings-Daemon  ###
-[org.gnome.settings-daemon.plugins.media-keys]
+[org.gnome.settings-daemon.plugins.media-keys:wasta]
 home = ['<Ctrl><Shift>h']
 
-[org.gnome.settings-daemon.plugins.power]
+[org.gnome.settings-daemon.plugins.power:wasta]
 button-power = 'interactive'
 button-sleep = 'suspend'
 critical-battery-action = 'suspend'
 lid-close-suspend-with-external-monitor = true
-##lock-on-suspend = false
 percentage-action = 5
 percentage-critical = 10
 percentage-low = 15
 power-button-action = 'interactive'
-##sleep-display-battery = 1200
 sleep-inactive-battery-timeout = 1800
 use-time-for-policy = false
 
-[org.gnome.settings-daemon.plugins.xsettings]
+[org.gnome.settings-daemon.plugins.xsettings:wasta]
 antialiasing = 'rgba'
 
 
 ### GNOME Shell & Extensions ###
-[org.gnome.shell.extensions.dash-to-dock:wasta-ubuntu]
+[org.gnome.shell.extensions.dash-to-dock:wasta]
 autohide = true
 background-opacity = 0.9
 click-action = 'focus-or-previews'
@@ -154,14 +149,14 @@ running-indicator-style = 'METRO'
 # These overrides are found in the extension's local folder:
 # /usr/share/gnome-shell/extensions/dash-to-panel@jderose.githubcom/schemas/
 
-[org.gnome.shell.extensions.desktop-icons:wasta-ubuntu]
+[org.gnome.shell.extensions.desktop-icons:wasta]
 show-home = false
 show-trash = false
 icon-size = 'small'
 
 # Open dash to app list.
-[org.gnome.mutter]
+[org.gnome.mutter:wasta]
 overlay-key = ''
-[org.gnome.shell.keybindings]
+[org.gnome.shell.keybindings:wasta]
 toggle-application-view = ['Super_L']
 
