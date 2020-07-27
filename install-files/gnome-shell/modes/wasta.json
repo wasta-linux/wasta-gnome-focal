@@ -1,5 +1,5 @@
 {
     "parentMode": "user",
     "debugFlags": ["backtrace-crashes-all"],
-    "enabledExtensions": ["dash-to-panel@jderose9.github.com", "desktop-icons@csoriano", "drive-menu@gnome-shell-extensions.gcampax.github.com", "ubuntu-appindicators@ubuntu.com"]
+    "enabledExtensions": ["dash-to-panel@jderose9.github.com", "desktop-icons@csoriano", "drive-menu@gnome-shell-extensions.gcampax.github.com", "panel-osd@berend.de.schouwer.gmail.com", "ubuntu-appindicators@ubuntu.com"]
 }

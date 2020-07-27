@@ -42,7 +42,7 @@ echo
 echo "*** Updating dconf / gsettings default values"
 echo
 
-# Updating dconf first to incorporate those direct entries first.
+# Updating dconf before GNOME schemas because they depend on its entries.
 dconf update
 
 # GNOME Extension schemas: separate location from System schemas.
@@ -53,8 +53,11 @@ glib-compile-schemas /usr/share/gnome-shell/extensions/dash-to-panel@jderose9.gi
 glib-compile-schemas /usr/share/glib-2.0/schemas/ > /dev/null 2>&1 || true;
 
 # ------------------------------------------------------------------------------
-# Setting initial config
+# Setting initial Nautilus config
 # ------------------------------------------------------------------------------
+echo
+echo "*** Setting initial Nautilus config"
+echo
 # filemanager-actions has no system config file, so
 # copy user config to all existing users' .config folders.
 users=$(find /home/* -maxdepth 0 -type d | cut -d '/' -f3)
@@ -64,6 +67,11 @@ while IFS= read -r user; do
     chown -R $user:$user "/home/$user/.config/filemanager-actions"
     chmod 644 "/home/$user/.config/filemanager-actions/filemanager-actions.conf"
 done <<< "$users"
+
+echo
+echo "*** Restarting GNOME Shell"
+echo
+killall -SIGQUIT gnome-shell
 
 # ------------------------------------------------------------------------------
 # Finished
