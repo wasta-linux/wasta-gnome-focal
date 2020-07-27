@@ -10,7 +10,7 @@ Make Wasta-Linux on GNOME feel comfortable for those comfortable accustomed to W
   - [x] resize_pictures_to_4x6_200dpi.sh
   - [ ] _Resize images..._?
   - [ ] _Rotate images..._?
-- [ ] Make notifications show up in bottom right corner.
+- [x] Make notifications show up in bottom right corner.
 - [x] Make app indicator icons appear in dash-to-panel.
 - [x] Implement per-desktop gschema overrides.
 - [x] Make theming and styling independent of Ubuntu's Yaru theme.
