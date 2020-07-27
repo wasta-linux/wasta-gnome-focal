@@ -51,6 +51,6 @@ categories = ['Education']
 
 [org/gnome/desktop/app-folders/folders/Wasta]
 name = 'Wasta'
-translate = true
+translate = false
 categories = ['Wasta']
 apps = ['wasta-backup.desktop', 'wasta-menus-apps.desktop', 'wasta-menus.desktop', 'wasta-offline-setup.desktop', 'wasta-offline-snap-setup.desktop', 'wasta-reset.desktop', 'wasta-reset.desktop', 'wasta-resources.desktop', 'wasta-snap-manager.desktop']

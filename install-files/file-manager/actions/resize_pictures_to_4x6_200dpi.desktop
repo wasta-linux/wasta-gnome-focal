@@ -1,0 +1,23 @@
+[Desktop Entry]
+Type=Action
+Icon[en_US]=shotwell
+Icon[en]=shotwell
+Icon[C]=shotwell
+Tooltip[en_US]=Resize picture to a maximum of 1200 by 800 dots.
+Tooltip[en]=Resize picture to a maximum of 1200 by 800 dots.
+Tooltip[C]=Resize picture to a maximum of 1200 by 800 dots.
+ToolbarLabel[en_US]=Resize picture(s) to 4x6 @ 200dpi
+ToolbarLabel[en]=Resize picture(s) to 4x6 @ 200dpi
+ToolbarLabel[C]=Resize picture(s) to 4x6 @ 200dpi
+Name[en_US]=Resize picture(s) to 4x6 @ 200dpi
+Name[en]=Resize picture(s) to 4x6 @ 200dpi
+Name[C]=Resize picture(s) to 4x6 @ 200dpi
+Profiles=profile-zero;
+
+
+[X-Action-Profile profile-zero]
+Exec=/usr/share/file-manager/actions/resize_pictures_to_4x6_200dpi.sh %F
+Name[en_US]=Default profile
+Name[en]=Default profile
+Name[C]=Default profile
+MimeTypes=image/*;

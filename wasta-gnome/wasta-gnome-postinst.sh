@@ -53,6 +53,19 @@ glib-compile-schemas /usr/share/gnome-shell/extensions/dash-to-panel@jderose9.gi
 glib-compile-schemas /usr/share/glib-2.0/schemas/ > /dev/null 2>&1 || true;
 
 # ------------------------------------------------------------------------------
+# Setting initial config
+# ------------------------------------------------------------------------------
+# filemanager-actions has no system config file, so
+# copy user config to all existing users' .config folders.
+users=$(find /home/* -maxdepth 0 -type d | cut -d '/' -f3)
+while IFS= read -r user; do
+    mkdir -p -m 755 "/home/$user/.config/filemanager-actions"
+    cp /etc/skel/.config/filemanager-actions/filemanager-actions.conf "/home/$user/.config/filemanager-actions/filemanager-actions.conf"
+    chown -R $user:$user "/home/$user/.config/filemanager-actions"
+    chmod 644 "/home/$user/.config/filemanager-actions/filemanager-actions.conf"
+done <<< "$users"
+
+# ------------------------------------------------------------------------------
 # Finished
 # ------------------------------------------------------------------------------
 echo

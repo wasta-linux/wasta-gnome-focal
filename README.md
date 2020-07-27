@@ -3,8 +3,13 @@
 Make Wasta-Linux on GNOME feel comfortable for those comfortable accustomed to Windows.
 
 ### To-Do:
-- [ ] Decide between dash-to-dock or dash-to-panel.
-- [ ] Add Wasta's context menu options to Nautilus
+- [x] Decide between dash-to-dock or dash-to-panel.
+- [x] Add Wasta's context menu options to Nautilus
+  - [x] Compress_PDF.sh
+  - [x] Make_A4_PDF_Booklet.sh
+  - [x] resize_pictures_to_4x6_200dpi.sh
+  - [ ] _Resize images..._?
+  - [ ] _Rotate images..._?
 - [ ] Make notifications show up in bottom right corner.
 - [x] Make app indicator icons appear in dash-to-panel.
 - [x] Implement per-desktop gschema overrides.

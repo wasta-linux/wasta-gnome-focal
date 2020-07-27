@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Action
+TargetLocation=true
+Icon[en_US]=gedit
+Icon[en]=gedit
+Icon[C]=gedit
+Name[en_US]=New text file
+Name[en]=New text file
+Name[C]=New text file
+Profiles=profile-zero;
+
+
+[X-Action-Profile profile-zero]
+Exec=/usr/share/file-manager/actions/open_new_text_file.sh %d
+Name[en_US]=Default profile
+Name[en]=Default profile
+Name[C]=Default profile

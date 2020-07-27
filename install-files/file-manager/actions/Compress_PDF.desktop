@@ -1,0 +1,21 @@
+[Desktop Entry]
+Type=Action
+Icon[en_US]=evince
+Icon[en]=evince
+Icon[C]=evince
+Tooltip[C]=Compress PDF files, giving the user a selection list of compression levels.
+ToolbarLabel[en_US]=Compress PDF
+ToolbarLabel[en]=Compress PDF
+ToolbarLabel[C]=Compress PDF
+Name[en_US]=Compress PDF
+Name[en]=Compress PDF
+Name[C]=Compress PDF
+Profiles=profile-zero;
+
+
+[X-Action-Profile profile-zero]
+Exec=/usr/share/file-manager/actions/Compress_PDF.sh %F
+Name[en_US]=Default profile
+Name[en]=Default profile
+Name[C]=Default profile
+MimeTypes=application/pdf;

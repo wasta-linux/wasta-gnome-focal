@@ -1,0 +1,23 @@
+[Desktop Entry]
+Type=Action
+Icon[en_US]=accessories-text-editor
+Icon[en]=accessories-text-editor
+Icon[C]=accessories-text-editor
+Tooltip[en_US]=Rearrange PDF pages for two pages per side A4 printing with center staple.
+Tooltip[en]=Rearrange PDF pages for two pages per side A4 printing with center staple.
+Tooltip[C]=Rearrange PDF pages for two pages per side A4 printing with center staple.
+ToolbarLabel[en_US]=Make A4 PDF Booklet
+ToolbarLabel[en]=Make A4 PDF Booklet
+ToolbarLabel[C]=Make A4 PDF Booklet
+Name[en_US]=Make A4 PDF Booklet
+Name[en]=Make A4 PDF Booklet
+Name[C]=Make A4 PDF Booklet
+Profiles=profile-zero;
+
+
+[X-Action-Profile profile-zero]
+Exec=/usr/share/file-manager/actions/Make_A4_PDF_Booklet.sh %F
+Name[en_US]=Default profile
+Name[en]=Default profile
+Name[C]=Default profile
+MimeTypes=application/pdf;
