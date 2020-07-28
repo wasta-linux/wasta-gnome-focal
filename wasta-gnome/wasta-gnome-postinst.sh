@@ -74,6 +74,12 @@ echo
 killall -SIGQUIT gnome-shell
 
 # ------------------------------------------------------------------------------
+# Other initial config
+# ------------------------------------------------------------------------------
+# Add Wasta icon to slick-greeter desktop entry.
+cp /usr/share/wasta-multidesktop/resources/wl-round-22.png /usr/share/slick-greeter/badges/wasta-gnome.png
+
+# ------------------------------------------------------------------------------
 # Finished
 # ------------------------------------------------------------------------------
 echo
