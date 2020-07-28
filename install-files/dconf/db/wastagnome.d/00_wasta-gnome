@@ -58,3 +58,4 @@ apps = ['wasta-backup.desktop', 'wasta-menus-apps.desktop', 'wasta-menus.desktop
 [org/gnome/shell/extensions/panel-osd]
 x-pos = 100.0
 y-pos = 5.0
+
