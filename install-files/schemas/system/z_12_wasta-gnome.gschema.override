@@ -30,18 +30,22 @@ use-custom-font = true
 [org.gnome.desktop.app-folders:wasta-gnome]
 folder-children = ['Graphics', 'AudioVideo', 'Network', 'Office', 'Development', 'System', 'Settings', 'Utility', 'Game', 'Education', 'Wasta']
 
-[org.gnome.desktop.peripherals.input-devices:wasta-gnome]
-click-method = 'default'
+[org.gnome.desktop.interface:wasta-gnome]
+#gtk-theme = 'Arc-Darker'
+show-battery-percentage = true
+
+[org.gnome.desktop.peripherals.touchpad:wasta-gnome]
+click-method = 'fingers'
 disable-while-typing = true
 natural-scroll = true
 tap-to-click = true
-scrolling-method = 'two-finger-scrolling'
+#scroll-method = 'two-finger-scrolling'
 
 [org.gnome.desktop.privacy:wasta-gnome]
 recent-files-max-age = 30
 
-[org.gnome.desktop.session:wasta-gnome]
-session-name = 'wasta'
+[org.gnome.desktop.screensaver:wasta-gnome]
+#picture-uri = 'file:///usr/share/backgrounds/wasta/fabien-bazanegue-unsplash-wasta.jpg'
 
 [org.gnome.desktop.sound:wasta-gnome]
 event-sounds = false
@@ -80,8 +84,10 @@ focus-change-on-pointer-rest = true
 [org.gtk.Settings.FileChooser:wasta-gnome]
 sort-directories-first = true
 
-[org.gnome.nautilus.desktop:wasta-gnome]
-home-icon-visible = false
+#[org.gnome.nautilus.desktop:wasta-gnome] <-- deprecated in 20.04; use extension "desktop-icons" instead
+#home-icon-visible = false
+#trash-icon-visible = false
+#volumes-visible = false
 
 [org.gnome.nautilus.icon-view:wasta-gnome]
 default-zoom-level = 'small'
@@ -98,7 +104,7 @@ show-hidden-files = false
 thumbnail-limit = uint64 4
 
 [org.gnome.nautilus.window-state:wasta-gnome]
-sidebar-width = 165
+sidebar-width = 250
 start-with-sidebar = true
 
 
@@ -123,36 +129,12 @@ antialiasing = 'rgba'
 
 
 ### GNOME Shell & Extensions ###
-[org.gnome.shell.extensions.dash-to-dock:wasta-gnome]
-autohide = true
-background-opacity = 0.9
-click-action = 'focus-or-previews'
-custom-theme-shrink = true
-custom-theme-customize-running-dots = true
-custom-theme-running-dots-color = '#1e90ff'
-custom-theme-running-dots-border-color = '#1e90ff'
-dash-max-icon-size = 36
-dock-fixed = true
-dock-position = 'BOTTOM'
-extend-height = true
-intellihide = false
-intellihide-mode = 'ALL_WINDOWS'
-# Put "apps" button at the "top" (left) end of dock.
-show-apps-at-top = true
-show-trash = false
-# Reduce dock transparency.
-transparency-mode = 'FIXED'
-# Use lines instead of dots to indicate open apps.
-running-indicator-style = 'METRO'
+[org.gnome.shell:wasta-gnome]
+app-picker-view = 1
+favorite-apps = ['shutdown-for-wasta-gnome.desktop', 'firefox.desktop', 'org.gnome.Nautilus.desktop', 'libreoffice-writer.desktop', 'wasta-backup.desktop', 'wasta-resources.desktop']
 
-[org.gnome.shell.extensions.dash-to-panel:wasta-gnome]
-# These overrides are found in the extension's local folder:
-# /usr/share/gnome-shell/extensions/dash-to-panel@jderose.githubcom/schemas/
-
-[org.gnome.shell.extensions.desktop-icons:wasta-gnome]
-show-home = false
-show-trash = false
-icon-size = 'small'
+[org.gnome.shell.overrides:wasta-gnome]
+edge-tiling = false
 
 # Open dash to app list.
 [org.gnome.mutter:wasta-gnome]

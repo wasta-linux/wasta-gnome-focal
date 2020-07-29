@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Shutdown
+Exec=gnome-session-quit --power-off
+Comment=Shutdown for Wasta GNOME
+Terminal=False
+Type=Application
+Icon=system-shutdown
+Categories=System;
+Name[fr_FR]=Arrêter

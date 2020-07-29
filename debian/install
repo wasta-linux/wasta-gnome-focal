@@ -1,9 +1,13 @@
+install-files/applications                          usr/share
 install-files/dconf                                 etc
 install-files/file-manager/filemanager-actions.conf etc/skel/.config/filemanager-actions
 install-files/file-manager/actions                  usr/share/file-manager
-install-files/glib-2.0                              usr/share
-install-files/gnome-session	                    usr/share
+install-files/gnome-session/*                       usr/share
 install-files/gnome-shell	                    usr/share
 install-files/lightdm.conf.d                        etc/lightdm
+install-files/schemas/dash-to-panel/*               usr/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas
+install-files/schemas/desktop-icons/*               usr/share/gnome-shell/extensions/desktop-icons@csoriano/schemas
+install-files/schemas/panel-osd/*                   usr/share/gnome-shell/extensions/panel-osd/@berend.de.schouwer.gmail.com/schemas
+install-files/schemas/system/*                      usr/share/glib-2.0/schemas
 install-files/xsessions	                    usr/share
 wasta-gnome                                         usr/share
