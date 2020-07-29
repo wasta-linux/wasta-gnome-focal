@@ -54,7 +54,8 @@ dconf update
 # GNOME Extension schemas: separate location from System schemas.
 glib-compile-schemas /usr/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas/ > /dev/null 2>&1 || true;
 
-glib-compile-schemas /usr/share/gnome-shell/extensions/desktop-icons@csoriano/schemas/ > /dev/null 2>&1 || true;
+# gschema is in system location when using deb package.
+#glib-compile-schemas /usr/share/gnome-shell/extensions/desktop-icons@csoriano/schemas/ > /dev/null 2>&1 || true;
 
 glib-compile-schemas /usr/share/gnome-shell/extensions/panel-osd@berend.de.schouwer.gmail.com/schemas/ > /dev/null 2>&1 || true;
 
@@ -72,7 +73,7 @@ echo
 # copy user config to all existing users' .config folders.
 users=$(find /home/* -maxdepth 0 -type d | cut -d '/' -f3)
 while IFS= read -r user; do
-    if [[ grep $user: /etc/passwd ]]; then
+    if [[ $(grep "$user:" /etc/passwd) ]]; then
         mkdir -p -m 755 "/home/$user/.config/filemanager-actions"
         cp /etc/skel/.config/filemanager-actions/filemanager-actions.conf "/home/$user/.config/filemanager-actions/filemanager-actions.conf"
         chown -R $user:$user "/home/$user/.config/filemanager-actions"
