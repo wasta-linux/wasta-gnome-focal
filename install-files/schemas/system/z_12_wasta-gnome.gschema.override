@@ -73,7 +73,8 @@ default-search = 'DuckDuckGo'
 ### Mutter Preferences ###
 [org.gnome.mutter:wasta-gnome]
 attach-modal-dialogs = true
-edge-tiling = false
+center-new-windows = true
+edge-tiling = true
 dynamic-workspaces = true
 workspaces-only-on-primary = true
 focus-change-on-pointer-rest = true
@@ -94,7 +95,6 @@ default-zoom-level = 'small'
 
 [org.gnome.nautilus.preferences:wasta-gnome]
 # Bulk renamer.
-# TODO: This doesn't exist in 20.04. Consider using filemanager-actions for this.
 # bulk-rename-tool = b'thunar --bulk-rename'
 default-sort-order = 'name'
 open-folder-on-dnd-hover = true
@@ -134,7 +134,7 @@ app-picker-view = 1
 favorite-apps = ['shutdown-for-wasta-gnome.desktop', 'firefox.desktop', 'org.gnome.Nautilus.desktop', 'libreoffice-writer.desktop', 'wasta-backup.desktop', 'wasta-resources.desktop']
 
 [org.gnome.shell.overrides:wasta-gnome]
-edge-tiling = false
+edge-tiling = true
 
 # Open dash to app list.
 [org.gnome.mutter:wasta-gnome]
