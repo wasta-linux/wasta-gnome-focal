@@ -1,5 +1,6 @@
 install-files/applications                          usr/share
 install-files/dconf                                 etc
+install-files/dbus-services/*                       usr/share/dbus-1/services
 install-files/file-manager/filemanager-actions.conf etc/skel/.config/filemanager-actions
 install-files/file-manager/actions                  usr/share/file-manager
 install-files/gnome-session/*                       usr/share/gnome-session/sessions
