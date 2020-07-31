@@ -110,7 +110,7 @@ start-with-sidebar = true
 
 ### Settings-Daemon  ###
 [org.gnome.settings-daemon.plugins.media-keys:wasta-gnome]
-home = ['<Ctrl><Shift>h']
+home = '<Super>e'
 
 [org.gnome.settings-daemon.plugins.power:wasta-gnome]
 button-power = 'interactive'
@@ -138,7 +138,7 @@ edge-tiling = true
 
 # Open dash to app list.
 [org.gnome.mutter:wasta-gnome]
-overlay-key = ''
+#overlay-key = ''
 [org.gnome.shell.keybindings:wasta-gnome]
-toggle-application-view = ['Super_L']
+#toggle-application-view = ['Super_L']
 
