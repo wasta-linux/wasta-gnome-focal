@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [[ ! -d $1 ]]; then
-    exit 1
+name="new file"
+if [[ $LANGUAGE == 'fr_FR' ]]; then
+    name="nouveau fichier"
 fi
-base_dir = $1
-gedit "$base_dir/new file"
+gedit "$1/$name"

@@ -6,4 +6,4 @@ Terminal=False
 Type=Application
 Icon=system-shutdown
 Categories=System;
-Name[fr_FR]=Arrêter
+Name[fr_FR]=Éteindre
