@@ -41,6 +41,11 @@ DIR=/usr/share/wasta-gnome
 # Add Wasta icon to slick-greeter desktop entry.
 cp -l /usr/share/wasta-multidesktop/resources/wl-round-22.png /usr/share/slick-greeter/badges/wasta-gnome.png
 
+# Disable gnome-screensaver by default (re-enabled at wasta-gnome session login).
+if [[ -e /usr/share/dbus-1/services/org.gnome.ScreenSaver.service ]]; then
+    mv /usr/share/dbus-1/services/org.gnome.ScreenSaver.service{,.disabled}
+fi
+
 # ------------------------------------------------------------------------------
 # Dconf / Gsettings Default Value adjustments
 # ------------------------------------------------------------------------------
@@ -54,7 +59,7 @@ dconf update
 # GNOME Extension schemas: separate location from System schemas.
 glib-compile-schemas /usr/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas/ > /dev/null 2>&1 || true;
 
-# gschema is in system location when using deb package.
+# gschema is in system location when using deb package, so separate cmd not needed.
 #glib-compile-schemas /usr/share/gnome-shell/extensions/desktop-icons@csoriano/schemas/ > /dev/null 2>&1 || true;
 
 glib-compile-schemas /usr/share/gnome-shell/extensions/panel-osd@berend.de.schouwer.gmail.com/schemas/ > /dev/null 2>&1 || true;

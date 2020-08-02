@@ -11,5 +11,5 @@ install-files/schemas/dash-to-panel/*               usr/share/gnome-shell/extens
 install-files/schemas/desktop-icons/*               usr/share/glib-2.0/schemas
 install-files/schemas/panel-osd/*                   usr/share/gnome-shell/extensions/panel-osd/@berend.de.schouwer.gmail.com/schemas
 install-files/schemas/system/*                      usr/share/glib-2.0/schemas
-install-files/xsessions	                    usr/share
+install-files/xsessions	                            usr/share
 wasta-gnome                                         usr/share

@@ -1,3 +1,9 @@
+wasta-gnome-focal (0.1.2) focal; urgency=medium
+
+  * Disabled gnome-screensaver when not in wasta-gnome session.
+
+ -- Nate Marti <nate_marti@sil.org>  Sun, 02 Aug 2020 06:08:17 +0100
+
 wasta-gnome-focal (0.1.1) focal; urgency=medium
 
   * Added Nautilus context menu support.

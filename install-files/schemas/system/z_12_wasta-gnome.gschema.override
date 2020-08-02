@@ -94,8 +94,6 @@ sort-directories-first = true
 default-zoom-level = 'small'
 
 [org.gnome.nautilus.preferences:wasta-gnome]
-# Bulk renamer. <-- available as a Nautilus add-on
-# bulk-rename-tool = b'thunar --bulk-rename'
 default-sort-order = 'name'
 open-folder-on-dnd-hover = true
 show-delete-permanently = false
