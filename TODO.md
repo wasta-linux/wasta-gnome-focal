@@ -1,5 +1,4 @@
 - [x] Add gnome-screensaver
-  - [ ] Disable added screensaver for other desktops, enable for wasta-gnome in wasta-login.sh
 - [x] Add Wasta's context menu options to Nautilus
   - [x] Compress_PDF.sh
   - [x] Make_A4_PDF_Booklet.sh
