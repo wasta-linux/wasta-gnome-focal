@@ -108,7 +108,7 @@ start-with-sidebar = true
 
 ### Settings-Daemon  ###
 [org.gnome.settings-daemon.plugins.media-keys:wasta-gnome]
-home = '<Super>e'
+home = ['<Super>e']
 
 [org.gnome.settings-daemon.plugins.power:wasta-gnome]
 button-power = 'interactive'
