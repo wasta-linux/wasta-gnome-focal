@@ -9,7 +9,7 @@ install-files/lightdm.conf.d                        etc/lightdm
 install-files/schemas/dash-to-panel/*               usr/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas
 # desktop-icons gschema location is system with deb, extension folder with manual install
 install-files/schemas/desktop-icons/*               usr/share/glib-2.0/schemas
-install-files/schemas/panel-osd/*                   usr/share/gnome-shell/extensions/panel-osd/@berend.de.schouwer.gmail.com/schemas
+install-files/schemas/panel-osd/*                   usr/share/gnome-shell/extensions/panel-osd@berend.de.schouwer.gmail.com/schemas
 install-files/schemas/system/*                      usr/share/glib-2.0/schemas
 install-files/xsessions	                            usr/share
 wasta-gnome                                         usr/share

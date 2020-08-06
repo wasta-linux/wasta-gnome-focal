@@ -1,3 +1,9 @@
+wasta-gnome-focal (0.1.3) focal; urgency=medium
+
+  * Fix wrongly installed panel-osd extension.
+
+ -- Nate Marti <nate_marti@sil.org>  Thu, 06 Aug 2020 17:37:20 +0100
+
 wasta-gnome-focal (0.1.2) focal; urgency=medium
 
   * Disabled gnome-screensaver when not in wasta-gnome session.
