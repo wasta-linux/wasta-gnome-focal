@@ -1,3 +1,9 @@
+wasta-gnome-focal (0.1.4) focal; urgency=medium
+
+  * Fixed typo preventing panel-osd override from working properly.
+
+ -- Nate Marti <nate_marti@sil.org>  Fri, 07 Aug 2020 10:09:07 +0100
+
 wasta-gnome-focal (0.1.3) focal; urgency=medium
 
   * Fix wrongly installed panel-osd extension.
