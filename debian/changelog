@@ -1,3 +1,9 @@
+wasta-gnome-focal (0.1.6) focal; urgency=medium
+
+  * Tweaked default settings for app names tooltip extension.
+
+ -- Nate Marti <nate_marti@sil.org>  Thu, 13 Aug 2020 09:32:25 +0100
+
 wasta-gnome-focal (0.1.5) focal; urgency=medium
 
   * Added app names tooltip extension.

@@ -1,0 +1,8 @@
+# z_12_wasta-gnome-applications-overview-tooltip.gschema.override
+#
+#   2020-08-13 ndm: initial settings for focal.
+#
+# ==============================================================================
+
+[org.gnome.shell.extensions.applications-overview-tooltip:wasta-gnome]
+borders = false
