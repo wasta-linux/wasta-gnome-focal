@@ -1,3 +1,9 @@
+wasta-gnome-focal (0.1.5) focal; urgency=medium
+
+  * Added app names tooltip extension.
+
+ -- Nate Marti <nate_marti@sil.org>  Thu, 13 Aug 2020 06:18:14 +0100
+
 wasta-gnome-focal (0.1.4) focal; urgency=medium
 
   * Fixed typo preventing panel-osd override from working properly.
