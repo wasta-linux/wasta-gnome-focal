@@ -1,3 +1,10 @@
+wasta-gnome-focal (0.1.8) focal; urgency=medium
+
+  * Reset app-folder categories if they are mysteriously changed to
+    Ubuntu defaults.
+
+ -- Nate Marti <nate_marti@sil.org>  Wed, 25 Nov 2020 13:17:03 +0100
+
 wasta-gnome-focal (0.1.7) focal; urgency=medium
 
   * Fixed typo preventing appindicatorsupport extension from being enabled.

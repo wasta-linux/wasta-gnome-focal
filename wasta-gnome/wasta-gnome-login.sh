@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Get current session name (can't depend on env at login).
+# Get current user and session name (can't depend on env at login).
+CURR_USER=$(grep -a "User .* authorized" /var/log/lightdm/lightdm.log | \
+    tail -1 | sed 's@.*User \(.*\) authorized@\1@')
 CURR_SESSION=$(grep -a "Greeter requests session" /var/log/lightdm/lightdm.log | \
     tail -1 | sed 's@.*Greeter requests session \(.*\)@\1@')
 
@@ -14,5 +16,13 @@ if [[ -e /usr/share/dbus-1/services/org.gnome.ScreenSaver.service.disabled ]]; t
     mv /usr/share/dbus-1/services/org.gnome.ScreenSaver.service{.disabled,}
 else
     # gnome-screensaver not properly installed for some reason.
-    continue
+    echo "gnome-screensaver not properly installed"
+fi
+
+# Reset ...app-folders folder-children if it's currently set as ['Utilities', 'YAST']
+key_path='org.gnome.desktop.app-folders'
+key='folder-children'
+curr_children=$(sudo --user=$CURR_USER gsettings get "$key_path" "$key")
+if [[ $curr_children = "['Utilities', 'YaST']" ]]; then
+    sudo --user=$CURR_USER gsettings reset "$key_path" "$key"
 fi

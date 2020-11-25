@@ -14,5 +14,5 @@ if [[ -e /usr/share/dbus-1/services/org.gnome.ScreenSaver.service ]]; then
     mv /usr/share/dbus-1/services/org.gnome.ScreenSaver.service{,.disabled}
 else
     # gnome-screensaver not properly installed for some reason.
-    continue
+    echo "gnome-screensaver not properly installed"
 fi
