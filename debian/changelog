@@ -1,3 +1,9 @@
+wasta-gnome-focal (0.1.9) focal; urgency=medium
+
+  * Use dbus-launch for proper execution of gsettings reset.
+
+ -- Nate Marti <nate_marti@sil.org>  Thu, 03 Dec 2020 08:43:16 +0100
+
 wasta-gnome-focal (0.1.8) focal; urgency=medium
 
   * Reset app-folder categories if they are mysteriously changed to

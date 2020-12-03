@@ -19,10 +19,10 @@ else
     echo "gnome-screensaver not properly installed"
 fi
 
-# Reset ...app-folders folder-children if it's currently set as ['Utilities', 'YAST']
+# Reset ...app-folders folder-children if it's currently set as ['Utilities', 'YaST']
 key_path='org.gnome.desktop.app-folders'
 key='folder-children'
 curr_children=$(sudo --user=$CURR_USER gsettings get "$key_path" "$key")
 if [[ $curr_children = "['Utilities', 'YaST']" ]]; then
-    sudo --user=$CURR_USER gsettings reset "$key_path" "$key"
+    sudo --user=$CURR_USER --set-home dbus-launch gsettings reset "$key_path" "$key"
 fi
