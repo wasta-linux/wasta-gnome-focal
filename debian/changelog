@@ -1,3 +1,9 @@
+wasta-gnome-focal (0.1.11) focal; urgency=medium
+
+  * Account for errant 'Sundry' category in app-folders.
+
+ -- Nate Marti <nate_marti@sil.org>  Sat, 12 Dec 2020 14:39:07 +0100
+
 wasta-gnome-focal (0.1.10) focal; urgency=medium
 
   * Added error log.

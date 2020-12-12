@@ -26,7 +26,8 @@ fi
 key_path='org.gnome.desktop.app-folders'
 key='folder-children'
 curr_children=$(sudo --user=$CURR_USER gsettings get "$key_path" "$key")
-if [[ $curr_children = "['Utilities', 'YaST']" ]]; then
+if [[ $curr_children = "['Utilities', 'YaST']" ]] || \
+    [[ $curr_children = "['Utilities', 'Sundry', 'YaST']" ]]; then
     sudo --user=$CURR_USER --set-home dbus-launch gsettings reset "$key_path" "$key" 2>&1 >/dev/null | tee -a "${LOG}"
 fi
 echo | tee -a "${LOG}"

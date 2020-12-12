@@ -1,5 +1,7 @@
+- [ ] Test using "runuser $USER -- command..." instead of "sudo --user=$USER -H command..."
+  - It works, but is it worth pushing another update just for that?
 - [x] Reset app-folders folder-children:
-    - check for "bad" Ubuntu setting during login and reset if needed
+    - need to check for "Utilities", "Sundry", and "YaST"
 - [x] Add gnome-screensaver
 - [x] Add Wasta's context menu options to Nautilus
 - [x] Make notifications show up in bottom right corner.
