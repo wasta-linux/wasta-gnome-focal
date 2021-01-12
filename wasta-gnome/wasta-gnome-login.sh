@@ -1,8 +1,12 @@
 #!/bin/bash
 
 DM=''
-LOG="/var/log/wasta-multidesktop/wasta-gnome-login-errors"
+LOG="/var/log/wasta-multidesktop/wasta-gnome-login.log"
+mkdir -p '/var/log/wasta-multidesktop'
 date | tee -a "${LOG}"
+
+# Print known environment.
+printenv | tee -a "${LOG}"
 
 # Determine display manager.
 dm_pre=$(systemctl status display-manager.service | grep 'Main PID:' | awk -F'(' '{print $2}')
