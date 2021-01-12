@@ -3,10 +3,11 @@
 DM=''
 LOG="/var/log/wasta-multidesktop/wasta-gnome-login.log"
 mkdir -p '/var/log/wasta-multidesktop'
+touch "${LOG}"
 date | tee -a "${LOG}"
 
 # Print known environment.
-printenv | tee -a "${LOG}"
+#printenv | tee -a "${LOG}"
 
 # Determine display manager.
 dm_pre=$(systemctl status display-manager.service | grep 'Main PID:' | awk -F'(' '{print $2}')
@@ -20,15 +21,22 @@ else
     exit 1
 fi
 
-# Get current user and session name (can't depend on env at login).
-# TODO: How to get CURR_USER and CURR_SESSION if using gdm3?
-CURR_USER=$(grep -a "User .* authorized" /var/log/lightdm/lightdm.log | \
-    tail -1 | sed 's@.*User \(.*\) authorized@\1@')
-CURR_SESSION=$(grep -a "Greeter requests session" /var/log/lightdm/lightdm.log | \
-    tail -1 | sed 's@.*Greeter requests session \(.*\)@\1@')
+# Get current user and session name (can't depend on env at lightdm login).
+if [[ $DM == 'gdm3' ]]; then
+    CURR_USER=$USERNAME
+    CURR_SESSION=$GDMSESSION
+elif [[ $DM == 'lightdm' ]]; then
+    CURR_USER=$(grep -a "User .* authorized" /var/log/lightdm/lightdm.log | \
+        tail -1 | sed 's@.*User \(.*\) authorized@\1@')
+    CURR_SESSION=$(grep -a "Greeter requests session" /var/log/lightdm/lightdm.log | \
+        tail -1 | sed 's@.*Greeter requests session \(.*\)@\1@')
+fi
 
-# Exit if not wasta-gnome session.
-if [[ $CURR_SESSION != wasta-gnome ]]; then
+echo "Current Session: $CURR_SESSION"
+# Exit if not wasta-gnome or ubuntu session.
+if [[ $CURR_SESSION != wasta-gnome ]] \
+    || [[ $CURR_SESSION != ubuntu ]] \
+    || [[ $CURR_SESSION != ubuntu-wayland ]]; then
     exit 0
 fi
 
