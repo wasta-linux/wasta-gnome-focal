@@ -25,6 +25,7 @@ fi
 if [[ $DM == 'gdm3' ]]; then
     CURR_USER=$USERNAME
     CURR_SESSION=$GDMSESSION
+    printenv
 elif [[ $DM == 'lightdm' ]]; then
     CURR_USER=$(grep -a "User .* authorized" /var/log/lightdm/lightdm.log | \
         tail -1 | sed 's@.*User \(.*\) authorized@\1@')
