@@ -7,7 +7,7 @@ DM=''
 LOG="/var/log/wasta-multidesktop/wasta-gnome-login.log"
 mkdir -p '/var/log/wasta-multidesktop'
 touch "$LOG"
-echo "WGL: $(date)" | tee -a "$LOG"
+
 
 # Determine display manager.
 dm_pre=$(systemctl status display-manager.service | grep 'Main PID:' | awk -F'(' '{print $2}')
@@ -15,9 +15,9 @@ dm_pre=$(systemctl status display-manager.service | grep 'Main PID:' | awk -F'('
 dm_pre="${dm_pre::-1}"
 if [[ $dm_pre == 'lightdm' ]] || [[ $dm_pre == 'gdm3' ]]; then
     DM=$dm_pre
-    echo "WGL: Using $DM" | tee -a "$LOG"
 else
     # Unsupported display manager!
+    echo "WGL: $(date)" | tee -a "$LOG"
     echo "WGL: Error: Display manager \"$dm_pre\" not supported." | tee -a "$LOG"
     exit 1
 fi
@@ -33,14 +33,17 @@ elif [[ $DM == 'lightdm' ]]; then
         tail -1 | sed 's@.*Greeter requests session \(.*\)@\1@')
 fi
 
-echo "WGL: Current Session: $CURR_SESSION" | tail -a "$LOG"
-echo "WGL: Current User: $CURR_USER" | tail -a "$LOG"
 # Exit if not wasta-gnome or ubuntu session.
 if [[ $CURR_SESSION != wasta-gnome ]] \
     || [[ $CURR_SESSION != ubuntu ]] \
     || [[ $CURR_SESSION != ubuntu-wayland ]]; then
     exit 0
 fi
+
+echo "WGL: $(date)" | tee -a "$LOG"
+echo "WGL: Using $DM" | tee -a "$LOG"
+echo "WGL: Current Session: $CURR_SESSION" | tail -a "$LOG"
+echo "WGL: Current User: $CURR_USER" | tail -a "$LOG"
 
 # Reset ...app-folders folder-children if it's currently set as ['Utilities', 'YaST']
 key_path='org.gnome.desktop.app-folders'
@@ -51,7 +54,6 @@ if [[ $curr_children = "['Utilities', 'YaST']" ]] || \
     sudo --user=$CURR_USER --set-home dbus-launch gsettings reset "$key_path" "$key" 2>&1 >/dev/null | tee -a "$LOG"
     echo "WGL: Reset gsettings $key_path $key" | tail -a "$LOG"
 fi
-echo | tee -a "$LOG"
 
 # Make adjustments if using lightdm and exit.
 if [[ $DM == 'lightdm' ]]; then
@@ -96,8 +98,8 @@ urldecode(){ : "${*//+/ }"; echo -e "${_//%/\\x}"; }
 PREV_SESSION_FILE="$LOG"
 PREV_SESSION=$(grep 'WGL: Current user previous session:' $PREV_SESSION_FILE | tail -n1)
 #DEBUG_FILE=/var/log/wasta-multidesktop/wasta-login-debug
-echo "WGL: Current user previous session: $PREV_SESSION"
-
+echo "WGL: Current user previous session: $PREV_SESSION" | tee -a "$LOG"
+exit 0
 PID_DCONF=$(pidof dconf-service)
 PID_DBUS=$(pidof dbus-daemon)
 
