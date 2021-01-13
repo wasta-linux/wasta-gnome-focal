@@ -8,7 +8,6 @@ LOG="/var/log/wasta-multidesktop/wasta-gnome-login.log"
 mkdir -p '/var/log/wasta-multidesktop'
 touch "$LOG"
 
-
 # Determine display manager.
 dm_pre=$(systemctl status display-manager.service | grep 'Main PID:' | awk -F'(' '{print $2}')
 # Get rid of 2nd parenthesis.
@@ -37,6 +36,8 @@ fi
 if [[ $CURR_SESSION != wasta-gnome ]] \
     || [[ $CURR_SESSION != ubuntu ]] \
     || [[ $CURR_SESSION != ubuntu-wayland ]]; then
+    echo "WGL: $(date)" | tee -a "$LOG"
+    echo "WGL: Session not supported: $CURR_SESSION" | tee -a "$LOG"
     exit 0
 fi
 
