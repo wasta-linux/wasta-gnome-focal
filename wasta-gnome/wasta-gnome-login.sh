@@ -1,13 +1,13 @@
 #!/bin/bash
 
+# GDM3 requires that this script be named "Default" and placed in:
+#   /etc/gdm3/PostLogin/ or /etc/gdm3/PreSession/
+
 DM=''
 LOG="/var/log/wasta-multidesktop/wasta-gnome-login.log"
 mkdir -p '/var/log/wasta-multidesktop'
-touch "${LOG}"
-date | tee -a "${LOG}"
-
-# Print known environment.
-#printenv | tee -a "${LOG}"
+touch "$LOG"
+echo "WGL: $(date)" | tee -a "$LOG"
 
 # Determine display manager.
 dm_pre=$(systemctl status display-manager.service | grep 'Main PID:' | awk -F'(' '{print $2}')
@@ -15,9 +15,10 @@ dm_pre=$(systemctl status display-manager.service | grep 'Main PID:' | awk -F'('
 dm_pre="${dm_pre::-1}"
 if [[ $dm_pre == 'lightdm' ]] || [[ $dm_pre == 'gdm3' ]]; then
     DM=$dm_pre
+    echo "WGL: Using $DM" | tee -a "$LOG"
 else
     # Unsupported display manager!
-    echo "Error: Display manager \"$dm_pre\" not supported." | tee -a "${LOG}"
+    echo "WGL: Error: Display manager \"$dm_pre\" not supported." | tee -a "$LOG"
     exit 1
 fi
 
@@ -32,7 +33,8 @@ elif [[ $DM == 'lightdm' ]]; then
         tail -1 | sed 's@.*Greeter requests session \(.*\)@\1@')
 fi
 
-echo "Current Session: $CURR_SESSION"
+echo "WGL: Current Session: $CURR_SESSION" | tail -a "$LOG"
+echo "WGL: Current User: $CURR_USER" | tail -a "$LOG"
 # Exit if not wasta-gnome or ubuntu session.
 if [[ $CURR_SESSION != wasta-gnome ]] \
     || [[ $CURR_SESSION != ubuntu ]] \
@@ -46,17 +48,19 @@ key='folder-children'
 curr_children=$(sudo --user=$CURR_USER gsettings get "$key_path" "$key")
 if [[ $curr_children = "['Utilities', 'YaST']" ]] || \
     [[ $curr_children = "['Utilities', 'Sundry', 'YaST']" ]]; then
-    sudo --user=$CURR_USER --set-home dbus-launch gsettings reset "$key_path" "$key" 2>&1 >/dev/null | tee -a "${LOG}"
+    sudo --user=$CURR_USER --set-home dbus-launch gsettings reset "$key_path" "$key" 2>&1 >/dev/null | tee -a "$LOG"
+    echo "WGL: Reset gsettings $key_path $key" | tail -a "$LOG"
 fi
-echo | tee -a "${LOG}"
+echo | tee -a "$LOG"
 
 # Make adjustments if using lightdm and exit.
 if [[ $DM == 'lightdm' ]]; then
     if [[ -e /usr/share/dbus-1/services/org.gnome.ScreenSaver.service.disabled ]]; then
         mv /usr/share/dbus-1/services/org.gnome.ScreenSaver.service{.disabled,}
+        echo "WGL: Enabled gnome-screensaver."
     else
         # gnome-screensaver not previously disabled at login.
-        echo "gnome-screensaver not disabled prior to lightdm login" | tee -a "${LOG}"
+        echo "WGL: gnome-screensaver not disabled prior to lightdm login" | tee -a "$LOG"
     fi
     exit 0
 fi
@@ -89,10 +93,10 @@ urldecode(){ : "${*//+/ }"; echo -e "${_//%/\\x}"; }
 
 # TODO: Need another way to get user's previous session name (from gdm3).
 #PREV_SESSION_FILE=/var/log/wasta-multidesktop/$CURR_USER-prev-session
-PREV_SESSION_FILE=''
-#PREV_SESSION=$(cat $PREV_SESSION_FILE)
-PREV_SESSION=wasta-gnome
+PREV_SESSION_FILE="$LOG"
+PREV_SESSION=$(grep 'WGL: Current user previous session:' $PREV_SESSION_FILE | tail -n1)
 #DEBUG_FILE=/var/log/wasta-multidesktop/wasta-login-debug
+echo "WGL: Current user previous session: $PREV_SESSION"
 
 PID_DCONF=$(pidof dconf-service)
 PID_DBUS=$(pidof dbus-daemon)
