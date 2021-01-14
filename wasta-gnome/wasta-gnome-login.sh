@@ -24,6 +24,21 @@ script_exit(){
     exit $1
 }
 
+log_msg(){
+    title='WGL'
+    type='info'
+    if [[ $1 == 'debug' ]]; then
+        type='debug'
+        title='WGL-DEBUG'
+        shift
+    fi
+    msg="${title}: $@"
+    if [[ $type == 'debug' ]]; then
+        echo "$msg"
+    elif [[ $type == 'info' ]]; then
+        echo "$msg" | tee -a "$LOG"
+    fi
+}
 
 # ------------------------------------------------------------------------------
 # Main processing
@@ -79,10 +94,14 @@ if [[ ! $CURR_USER ]]; then
 fi
 
 # Write initial log entries.
-echo "WGL: $(date)" | tee -a "$LOG"
-echo "WGL: Using $DM" | tee -a "$LOG"
-echo "WGL: Current session: $CURR_SESSION" | tee -a "$LOG"
-echo "WGL: Current user: $CURR_USER" | tee -a "$LOG"
+#echo "WGL: $(date)" | tee -a "$LOG"
+log_msg "$(date)"
+#echo "WGL: Using $DM" | tee -a "$LOG"
+log_msg "Using $DM"
+#echo "WGL: Current session: $CURR_SESSION" | tee -a "$LOG"
+log_msg "Current session: $CURR_SESSION"
+#echo "WGL: Current user: $CURR_USER" | tee -a "$LOG"
+log_msg "Current user: $CURR_USER"
 
 # Reset ...app-folders folder-children if it's currently set as ['Utilities', 'YaST']
 key_path='org.gnome.desktop.app-folders'
@@ -138,31 +157,30 @@ echo "$CURR_SESSION" > "$PREV_SESSION_FILE"
 # Get initial dconf and dbus pids.
 PID_DCONF=$(pidof dconf-service)
 PID_DBUS=$(pidof dbus-daemon)
-echo "WGL-DEBUG: Initial pids: dconf-service: $PID_DCONF; dbus-daemon: $PID_DBUS"
+#echo "WGL-DEBUG: Initial pids: dconf-service: $PID_DCONF; dbus-daemon: $PID_DBUS"
+log_msg 'debug' "Initial pids: dconf-service: $PID_DCONF; dbus-daemon: $PID_DBUS"
 
 #DIR=/usr/share/wasta-multidesktop
 
-
 # xfconfd: started but shouldn't be running (likely residual from previous
 #   logged out xfce session)
-#if [ "$(pidof xfconfd)" ];
-#then
-#    if [ $DEBUG ];
-#    then
-#        echo "xfconfd is running and is being stopped: $(pidof xfconfd)" | tee -a $LOGFILE
-#    fi
-#    killall xfconfd | tee -a $LOGFILE
+#if [ "$(pidof xfconfd)" ]; then
+#    killall xfconfd | tee -a $LOG
 #fi
 
 # ------------------------------------------------------------------------------
 # Store current backgrounds
 # ------------------------------------------------------------------------------
-#if [[ -x /usr/bin/cinnamon ]]; then
-#    #cinnamon: "file://" precedes filename
-#    #2018-12-18 rik: will do urldecode but not currently necessary for cinnamon
-#    CINNAMON_BG_URL=$(su "$CURR_USER" -c "dbus-launch gsettings get org.cinnamon.desktop.background picture-uri" || true;)
-#    CINNAMON_BG=$(urldecode $CINNAMON_BG_URL)
-#fi
+if [[ -x /usr/bin/cinnamon ]]; then
+    #cinnamon: "file://" precedes filename
+    #2018-12-18 rik: will do urldecode but not currently necessary for cinnamon
+    key_path="org.cinnamon.desktop.background"
+    key="picture-uri"
+    CINNAMON_BG_URL=$(sudo --user=$CURR_USER --set-home dbus-launch gsettings get "$key_path" "$key" || true;)
+    CINNAMON_BG=$(urldecode $CINNAMON_BG_URL)
+    echo "WGL-DEBUG: User's cinnamon background: $CINNAMON_BG"
+    echo "WGL-DEBUG: dbus-daemon pids: $(pidof dbus-daemon)"
+fi
 
 if [[ -x /usr/bin/gnome-shell ]]; then
     #gnome: "file://" precedes filename
@@ -190,7 +208,7 @@ if [[ -e "$AS_FILE" ]]; then
     fi
     # Retrieve current AccountsService user background
     AS_BG=$(sed -n "s@BackgroundFile=@@p" $AS_FILE)
-    echo "WGL-DEBUG: Found background in AccountsService file: $AS_BG"
+    echo "WGL-DEBUG: User background in AccountsService file: $AS_BG"
 fi
 script_exit 0
 #if [[ -x /usr/bin/xfce4-session ]]; then
