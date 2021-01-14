@@ -66,11 +66,13 @@ fi
 # Get current user and session name (can't depend on env at lightdm login).
 if [[ $DM == 'gdm3' ]]; then
     CURR_USER=$USERNAME
-    #GDMSESSION not already set at PostLogin nor at PreSession.
+    # TODO: Need a different way to verify wayland session.
     session_cmd=$(journalctl | grep '/usr/bin/gnome-session' | tail -n1)
-    # <time> <hostname> gdm-password] [<pid>]: GdmSessionWorker: \
-    #   start program: /usr/lib/gdm3/gdm-x-session --run-script \
+    # X:
+    # GdmSessionWorker: start program: /usr/lib/gdm3/gdm-x-session --run-script \
     #   "env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu"
+    # Wayland:
+    # /usr/lib/gdm-wayland-session[<pid>]: dbus-daemon[<pid>]: [session uid=<uid> pid=<pid>] ...
     pat='s/.*--session=(.*)"/\1/'
     CURR_SESSION=$(echo $session_cmd | sed -r "$pat")
 elif [[ $DM == 'lightdm' ]]; then
@@ -207,7 +209,7 @@ if [[ -e "$AS_FILE" ]]; then
     fi
     # Retrieve current AccountsService user background
     AS_BG=$(sed -n "s@BackgroundFile=@@p" $AS_FILE)
-    log_msg 'debug' "User background in AccountsService file: $AS_BG"
+    log_msg 'debug' "User background in $AS_FILE: $AS_BG"
 fi
 
 #if [[ -x /usr/bin/xfce4-session ]]; then
@@ -442,7 +444,7 @@ ubuntu|ubuntu-xorg|gnome|gnome-flashback-metacity|gnome-flashback-compiz|wasta-g
     NEW_AS_BG=$(echo "$GNOME_BG" | sed "s@file://@@")
     if [[ -e $AS_FILE ]] && [[ "$AS_BG" != "$NEW_AS_BG" ]]; then
         sed -i -e "s@\(BackgroundFile=\).*@\1$NEW_AS_BG@" $AS_FILE
-        log_msg 'debug' "Background path saved to $AS_FILE"
+        log_msg 'debug' "User background path saved to $AS_FILE"
     fi
 ;;
 
