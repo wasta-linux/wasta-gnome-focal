@@ -3,6 +3,8 @@
 # GDM3 requires that this script be named "Default" and placed in:
 #   /etc/gdm3/PostLogin/ or /etc/gdm3/PreSession/
 
+START_EPOCH=$(date +%s)
+
 DM=''
 LOG="/var/log/wasta-multidesktop/wasta-gnome-login.log"
 mkdir -p '/var/log/wasta-multidesktop'
@@ -113,19 +115,11 @@ echo "$CURR_SESSION" > "$PREV_SESSION_FILE"
 # Get initial dconf and dbus pids.
 PID_DCONF=$(pidof dconf-service)
 PID_DBUS=$(pidof dbus-daemon)
-echo "WGL: pids: DCONF: $PID_DCONF; DBUS: $PID_DBUS"
+echo "WGL-DEBUG: pids: DCONF: $PID_DCONF; DBUS: $PID_DBUS"
+END_EPOCH=$(date +%s)
+elapsed=$(( $END_EPOCH - $START_EPOCH))
+echo "WGL-DEBUG: Script duration: $elapsed s"
 exit 0
-#if [ -e $DEBUG_FILE ];
-#then
-#    DEBUG=$(cat $DEBUG_FILE)
-#    if [ "$DEBUG" != "YES" ];
-#    then
-#        DEBUG=""
-#    fi
-#else
-#    # create empty $DEBUG_FILE
-#    touch $DEBUG_FILE
-#fi
 
 #DIR=/usr/share/wasta-multidesktop
 
