@@ -7,6 +7,28 @@ START_EPOCH=$(date +%s)
 
 DM=''
 LOG="/var/log/wasta-multidesktop/wasta-gnome-login.log"
+
+
+# ------------------------------------------------------------------------------
+# Functions
+# ------------------------------------------------------------------------------
+
+# function: urldecode used to decode gnome picture-uri
+# https://stackoverflow.com/questions/6250698/how-to-decode-url-encoded-string-in-shell
+urldecode(){ : "${*//+/ }"; echo -e "${_//%/\\x}"; }
+
+script_exit(){
+    END_EPOCH=$(date +%s)
+    elapsed=$(( $END_EPOCH - $START_EPOCH ))
+    echo "WGL-DEBUG: Login script duration: $elapsed s"
+    exit $1
+}
+
+
+# ------------------------------------------------------------------------------
+# Main processing
+# ------------------------------------------------------------------------------
+
 mkdir -p '/var/log/wasta-multidesktop'
 touch "$LOG"
 
@@ -20,7 +42,7 @@ else
     # Unsupported display manager!
     echo "WGL: $(date)" | tee -a "$LOG"
     echo "WGL: Error: Display manager \"$dm_pre\" not supported." | tee -a "$LOG"
-    exit 1
+    script_exit 1
 fi
 
 # Get current user and session name (can't depend on env at lightdm login).
@@ -46,7 +68,14 @@ if [[ $CURR_SESSION != wasta-gnome ]] \
     && [[ $CURR_SESSION != ubuntu-wayland ]]; then
     echo "WGL: $(date)" | tee -a "$LOG"
     echo "WGL: Session not supported: $CURR_SESSION" | tee -a "$LOG"
-    exit 0
+    script_exit 1
+fi
+
+# Exit if no CURR_USER (shouldn't happen).
+if [[ ! $CURR_USER ]]; then
+    echo "WGL: $(date)" | tee -a "$LOG"
+    echo "WGL: User not identified." | tee -a "$LOG"
+    script_exit 1
 fi
 
 # Write initial log entries.
@@ -74,7 +103,7 @@ if [[ $DM == 'lightdm' ]]; then
         # gnome-screensaver not previously disabled at login.
         echo "WGL: gnome-screensaver not disabled prior to lightdm login" | tee -a "$LOG"
     fi
-    exit 0
+    script_exit 0
 fi
 
 # Incorporating additional items from wasta-login so as not to depend on wasta-multidesktop:
@@ -92,23 +121,17 @@ fi
 #   - wasta-multidesktop is not installed
 #   - display-manager is gdm3 rather than lightdm
 
-# function: urldecode used to decode gnome picture-uri
-# https://stackoverflow.com/questions/6250698/how-to-decode-url-encoded-string-in-shell
-urldecode(){ : "${*//+/ }"; echo -e "${_//%/\\x}"; }
 
 # ------------------------------------------------------------------------------
 # Initial Setup
 # ------------------------------------------------------------------------------
 
-#mkdir -p /var/log/wasta-multidesktop
-#LOGFILE=/var/log/wasta-multidesktop/wasta-login.txt
-
 # Get user's previous session.
 PREV_SESSION_FILE=/var/log/wasta-multidesktop/$CURR_USER-prev-session
 touch "$PREV_SESSION_FILE"
 PREV_SESSION=$(cat "$PREV_SESSION_FILE")
-#DEBUG_FILE=/var/log/wasta-multidesktop/wasta-login-debug
 echo "WGL: Current user previous session: $PREV_SESSION" | tee -a "$LOG"
+
 # Now send CURR_SESS to PREV_SESSION_FILE for next run.
 echo "$CURR_SESSION" > "$PREV_SESSION_FILE"
 
@@ -116,48 +139,11 @@ echo "$CURR_SESSION" > "$PREV_SESSION_FILE"
 PID_DCONF=$(pidof dconf-service)
 PID_DBUS=$(pidof dbus-daemon)
 echo "WGL-DEBUG: pids: DCONF: $PID_DCONF; DBUS: $PID_DBUS"
-END_EPOCH=$(date +%s)
-elapsed=$(( $END_EPOCH - $START_EPOCH))
-echo "WGL-DEBUG: Script duration: $elapsed s"
-exit 0
+
+script_exit 0
 
 #DIR=/usr/share/wasta-multidesktop
 
-#if [ $DEBUG ];
-#then
-#    echo | tee -a $LOGFILE
-#    echo "$(date) starting wasta-login" | tee -a $LOGFILE
-#    echo "current user: $CURR_USER" | tee -a $LOGFILE
-#    echo "current session: $CURR_SESSION" | tee -a $LOGFILE
-#    echo "PREV session for user: $PREV_SESSION" | tee -a $LOGFILE
-#
-#    if [ -x /usr/bin/nemo ];
-#    then
-#        echo "TOP NEMO show desktop icons: $(su $CURR_USER -c 'dbus-launch gsettings get org.nemo.desktop desktop-layout')" | tee -a $LOGFILE
-#    fi
-#
-#    if [ -x /usr/bin/nautilus ];
-#    then
-#        echo "NAUTILUS show desktop icons: $(su $CURR_USER -c 'dbus-launch gsettings get org.gnome.desktop.background show-desktop-icons')" | tee -a $LOGFILE
-#        echo "NAUTILUS draw background: $(su $CURR_USER -c 'dbus-launch gsettings get org.gnome.desktop.background draw-background')" | tee -a $LOGFILE
-#    fi
-#fi
-
-if ! [[ $CURR_USER ]]; then
-    #if [ $DEBUG ];
-    #then
-    #    echo "EXITING... no user found" | tee -a $LOGFILE
-    #fi
-    exit 0
-fi
-
-if ! [[ $CURR_SESSION ]]; then
-    #if [ $DEBUG ];
-    #then
-    #    echo "EXITING... no session found" | tee -a $LOGFILE
-    #fi
-    exit 0
-fi
 
 # xfconfd: started but shouldn't be running (likely residual from previous
 #   logged out xfce session)
