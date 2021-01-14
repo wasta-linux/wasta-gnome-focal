@@ -39,9 +39,10 @@ elif [[ $DM == 'lightdm' ]]; then
 fi
 
 # Exit if not wasta-gnome or ubuntu session.
+# TODO: 'ubuntu' is returned but somehow doesn't pass this test...
 if [[ $CURR_SESSION != wasta-gnome ]] \
-    || [[ $CURR_SESSION != ubuntu ]] \
-    || [[ $CURR_SESSION != ubuntu-wayland ]]; then
+    && [[ $CURR_SESSION != ubuntu ]] \
+    && [[ $CURR_SESSION != ubuntu-wayland ]]; then
     echo "WGL: $(date)" | tee -a "$LOG"
     echo "WGL: Session not supported: $CURR_SESSION" | tee -a "$LOG"
     exit 0
