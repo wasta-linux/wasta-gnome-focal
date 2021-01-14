@@ -102,11 +102,17 @@ urldecode(){ : "${*//+/ }"; echo -e "${_//%/\\x}"; }
 #LOGFILE=/var/log/wasta-multidesktop/wasta-login.txt
 
 # TODO: Need another way to get user's previous session name (from gdm3).
-#PREV_SESSION_FILE=/var/log/wasta-multidesktop/$CURR_USER-prev-session
-PREV_SESSION_FILE="$LOG"
-PREV_SESSION=$(grep 'WGL: Current user previous session:' $PREV_SESSION_FILE | tail -n1)
+PREV_SESSION_FILE=/var/log/wasta-multidesktop/$CURR_USER-prev-session
+touch "$PREV_SESSION_FILE"
+PREV_SESSION=$(cat "$PREV_SESSION_FILE")
+#PREV_SESSION_FILE="$LOG"
+#prev_session_line=$(grep 'WGL: Current user previous session:' $PREV_SESSION_FILE | tail -n1)
+#pat='s/.*previous session: (.*)$/\1/'
+#PREV_SESSION=$(echo "$prev_session_line" | sed -r "$pat")
 #DEBUG_FILE=/var/log/wasta-multidesktop/wasta-login-debug
 echo "WGL: Current user previous session: $PREV_SESSION" | tee -a "$LOG"
+# Now send CURR_SESS to PREV_SESSION_FILE for next run.
+echo "$CURR_SESSION" > "$PREV_SESSION_FILE"
 exit 0
 PID_DCONF=$(pidof dconf-service)
 PID_DBUS=$(pidof dbus-daemon)
