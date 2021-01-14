@@ -81,8 +81,8 @@ fi
 # Write initial log entries.
 echo "WGL: $(date)" | tee -a "$LOG"
 echo "WGL: Using $DM" | tee -a "$LOG"
-echo "WGL: Current Session: $CURR_SESSION" | tail -a "$LOG"
-echo "WGL: Current User: $CURR_USER" | tail -a "$LOG"
+echo "WGL: Current Session: $CURR_SESSION" | tee -a "$LOG"
+echo "WGL: Current User: $CURR_USER" | tee -a "$LOG"
 
 # Reset ...app-folders folder-children if it's currently set as ['Utilities', 'YaST']
 key_path='org.gnome.desktop.app-folders'
@@ -91,7 +91,7 @@ curr_children=$(sudo --user=$CURR_USER gsettings get "$key_path" "$key")
 if [[ $curr_children = "['Utilities', 'YaST']" ]] || \
     [[ $curr_children = "['Utilities', 'Sundry', 'YaST']" ]]; then
     sudo --user=$CURR_USER --set-home dbus-launch gsettings reset "$key_path" "$key" 2>&1 >/dev/null | tee -a "$LOG"
-    echo "WGL: Reset gsettings $key_path $key" | tail -a "$LOG"
+    echo "WGL: Reset gsettings $key_path $key" | tee -a "$LOG"
 fi
 
 # Make adjustments if using lightdm and exit.
@@ -138,7 +138,7 @@ echo "$CURR_SESSION" > "$PREV_SESSION_FILE"
 # Get initial dconf and dbus pids.
 PID_DCONF=$(pidof dconf-service)
 PID_DBUS=$(pidof dbus-daemon)
-echo "WGL-DEBUG: pids: DCONF: $PID_DCONF; DBUS: $PID_DBUS"
+echo "WGL-DEBUG: Initial pids: DCONF: $PID_DCONF; DBUS: $PID_DBUS"
 
 script_exit 0
 
