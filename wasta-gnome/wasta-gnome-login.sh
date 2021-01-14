@@ -81,8 +81,8 @@ fi
 # Write initial log entries.
 echo "WGL: $(date)" | tee -a "$LOG"
 echo "WGL: Using $DM" | tee -a "$LOG"
-echo "WGL: Current Session: $CURR_SESSION" | tee -a "$LOG"
-echo "WGL: Current User: $CURR_USER" | tee -a "$LOG"
+echo "WGL: Current session: $CURR_SESSION" | tee -a "$LOG"
+echo "WGL: Current user: $CURR_USER" | tee -a "$LOG"
 
 # Reset ...app-folders folder-children if it's currently set as ['Utilities', 'YaST']
 key_path='org.gnome.desktop.app-folders'
@@ -138,9 +138,7 @@ echo "$CURR_SESSION" > "$PREV_SESSION_FILE"
 # Get initial dconf and dbus pids.
 PID_DCONF=$(pidof dconf-service)
 PID_DBUS=$(pidof dbus-daemon)
-echo "WGL-DEBUG: Initial pids: DCONF: $PID_DCONF; DBUS: $PID_DBUS"
-
-script_exit 0
+echo "WGL-DEBUG: Initial pids: dconf-service: $PID_DCONF; dbus-daemon: $PID_DBUS"
 
 #DIR=/usr/share/wasta-multidesktop
 
@@ -174,8 +172,10 @@ if [[ -x /usr/bin/gnome-shell ]]; then
     key="picture-uri"
     GNOME_BG_URL=$(sudo --user=$CURR_USER --set-home dbus-launch gsettings get "$key_path" "$key" || true;)
     GNOME_BG=$(urldecode $GNOME_BG_URL)
+    echo "WGL-DEBUG: User's custom gnome background: $GNOME_BG"
+    echo "WGL-DEBUG: dbus-daemon pids: $(pidof dbus-daemon)"
 fi
-
+script_exit 0
 AS_FILE="/var/lib/AccountsService/users/$CURR_USER"
 #TODO: Does gdm3 use the AS_FILE?
 if [[ -e "$AS_FILE" ]]; then
