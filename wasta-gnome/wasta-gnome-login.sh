@@ -17,13 +17,6 @@ LOG="/var/log/wasta-multidesktop/wasta-gnome-login.log"
 # https://stackoverflow.com/questions/6250698/how-to-decode-url-encoded-string-in-shell
 urldecode(){ : "${*//+/ }"; echo -e "${_//%/\\x}"; }
 
-script_exit(){
-    END_EPOCH=$(date +%s)
-    elapsed=$(( $END_EPOCH - $START_EPOCH ))
-    echo "WGL-DEBUG: Login script duration: $elapsed s"
-    exit $1
-}
-
 log_msg(){
     title='WGL'
     type='info'
@@ -40,10 +33,20 @@ log_msg(){
     fi
 }
 
+script_exit(){
+    END_EPOCH=$(date +%s)
+    elapsed=$(( $END_EPOCH - $START_EPOCH ))
+    log_msg 'debug' "Login script duration: $elapsed s"
+    log_msg 'debug' "End of $0"
+    exit $1
+}
+
+
 # ------------------------------------------------------------------------------
 # Main processing
 # ------------------------------------------------------------------------------
 
+log_msg 'debug' "Start of $0"
 mkdir -p '/var/log/wasta-multidesktop'
 touch "$LOG"
 
@@ -55,8 +58,8 @@ if [[ $dm_pre == 'lightdm' ]] || [[ $dm_pre == 'gdm3' ]]; then
     DM=$dm_pre
 else
     # Unsupported display manager!
-    echo "WGL: $(date)" | tee -a "$LOG"
-    echo "WGL: Error: Display manager \"$dm_pre\" not supported." | tee -a "$LOG"
+    log_msg "$(date)"
+    log_msg "Error: Display manager \"$dm_pre\" not supported."
     script_exit 1
 fi
 
@@ -81,26 +84,22 @@ fi
 if [[ $CURR_SESSION != wasta-gnome ]] \
     && [[ $CURR_SESSION != ubuntu ]] \
     && [[ $CURR_SESSION != ubuntu-wayland ]]; then
-    echo "WGL: $(date)" | tee -a "$LOG"
-    echo "WGL: Session not supported: $CURR_SESSION" | tee -a "$LOG"
+    log_msg "$(date)"
+    log_msg "Session not supported: $CURR_SESSION"
     script_exit 1
 fi
 
 # Exit if no CURR_USER (shouldn't happen).
 if [[ ! $CURR_USER ]]; then
-    echo "WGL: $(date)" | tee -a "$LOG"
-    echo "WGL: User not identified." | tee -a "$LOG"
+    log_msg "$(date)"
+    log_msg "User not identified."
     script_exit 1
 fi
 
 # Write initial log entries.
-#echo "WGL: $(date)" | tee -a "$LOG"
 log_msg "$(date)"
-#echo "WGL: Using $DM" | tee -a "$LOG"
 log_msg "Using $DM"
-#echo "WGL: Current session: $CURR_SESSION" | tee -a "$LOG"
 log_msg "Current session: $CURR_SESSION"
-#echo "WGL: Current user: $CURR_USER" | tee -a "$LOG"
 log_msg "Current user: $CURR_USER"
 
 # Reset ...app-folders folder-children if it's currently set as ['Utilities', 'YaST']
@@ -110,17 +109,17 @@ curr_children=$(sudo --user=$CURR_USER gsettings get "$key_path" "$key")
 if [[ $curr_children = "['Utilities', 'YaST']" ]] || \
     [[ $curr_children = "['Utilities', 'Sundry', 'YaST']" ]]; then
     sudo --user=$CURR_USER --set-home dbus-launch gsettings reset "$key_path" "$key" 2>&1 >/dev/null | tee -a "$LOG"
-    echo "WGL: Reset gsettings $key_path $key" | tee -a "$LOG"
+    log_msg "Reset gsettings $key_path $key"
 fi
 
 # Make adjustments if using lightdm and exit.
 if [[ $DM == 'lightdm' ]]; then
     if [[ -e /usr/share/dbus-1/services/org.gnome.ScreenSaver.service.disabled ]]; then
         mv /usr/share/dbus-1/services/org.gnome.ScreenSaver.service{.disabled,}
-        echo "WGL: Enabled gnome-screensaver."
+        log_msg "Enabled gnome-screensaver."
     else
         # gnome-screensaver not previously disabled at login.
-        echo "WGL: gnome-screensaver not disabled prior to lightdm login" | tee -a "$LOG"
+        log_msg "gnome-screensaver not disabled prior to lightdm login"
     fi
     script_exit 0
 fi
@@ -145,11 +144,12 @@ fi
 # Initial Setup
 # ------------------------------------------------------------------------------
 
+log_msg 'debug' "Initial setup started..."
 # Get user's previous session.
 PREV_SESSION_FILE=/var/log/wasta-multidesktop/$CURR_USER-prev-session
 touch "$PREV_SESSION_FILE"
 PREV_SESSION=$(cat "$PREV_SESSION_FILE")
-echo "WGL: Current user previous session: $PREV_SESSION" | tee -a "$LOG"
+log_msg "Current user previous session: $PREV_SESSION"
 
 # Now send CURR_SESS to PREV_SESSION_FILE for next run.
 echo "$CURR_SESSION" > "$PREV_SESSION_FILE"
@@ -157,7 +157,6 @@ echo "$CURR_SESSION" > "$PREV_SESSION_FILE"
 # Get initial dconf and dbus pids.
 PID_DCONF=$(pidof dconf-service)
 PID_DBUS=$(pidof dbus-daemon)
-#echo "WGL-DEBUG: Initial pids: dconf-service: $PID_DCONF; dbus-daemon: $PID_DBUS"
 log_msg 'debug' "Initial pids: dconf-service: $PID_DCONF; dbus-daemon: $PID_DBUS"
 
 #DIR=/usr/share/wasta-multidesktop
@@ -178,8 +177,8 @@ if [[ -x /usr/bin/cinnamon ]]; then
     key="picture-uri"
     CINNAMON_BG_URL=$(sudo --user=$CURR_USER --set-home dbus-launch gsettings get "$key_path" "$key" || true;)
     CINNAMON_BG=$(urldecode $CINNAMON_BG_URL)
-    echo "WGL-DEBUG: User's cinnamon background: $CINNAMON_BG"
-    echo "WGL-DEBUG: dbus-daemon pids: $(pidof dbus-daemon)"
+    log_msg 'debug' "User's cinnamon background: $CINNAMON_BG"
+    log_msg 'debug' "dbus-daemon pids: $(pidof dbus-daemon)"
 fi
 
 if [[ -x /usr/bin/gnome-shell ]]; then
@@ -190,8 +189,8 @@ if [[ -x /usr/bin/gnome-shell ]]; then
     key="picture-uri"
     GNOME_BG_URL=$(sudo --user=$CURR_USER --set-home dbus-launch gsettings get "$key_path" "$key" || true;)
     GNOME_BG=$(urldecode $GNOME_BG_URL)
-    echo "WGL-DEBUG: User's gnome background: $GNOME_BG"
-    echo "WGL-DEBUG: dbus-daemon pids: $(pidof dbus-daemon)"
+    log_msg 'debug' "User's gnome background: $GNOME_BG"
+    log_msg 'debug' "dbus-daemon pids: $(pidof dbus-daemon)"
 fi
 
 AS_FILE="/var/lib/AccountsService/users/$CURR_USER"
@@ -208,9 +207,9 @@ if [[ -e "$AS_FILE" ]]; then
     fi
     # Retrieve current AccountsService user background
     AS_BG=$(sed -n "s@BackgroundFile=@@p" $AS_FILE)
-    echo "WGL-DEBUG: User background in AccountsService file: $AS_BG"
+    log_msg 'debug' "User background in AccountsService file: $AS_BG"
 fi
-script_exit 0
+
 #if [[ -x /usr/bin/xfce4-session ]]; then
 #    XFCE_DEFAULT_SETTINGS="/etc/xdg/xdg-xfce/xfce4/"
 #    XFCE_SETTINGS="/home/$CURR_USER/.config/xfce4/"
@@ -276,9 +275,9 @@ script_exit 0
 
 
 # ------------------------------------------------------------------------------
-# ALL Session Fixes
+# ALL Session Adjustments
 # ------------------------------------------------------------------------------
-
+log_msg 'debug' "Adjustments for all sessions started..."
 # SYSTEM level fixes:
 # - we want app-adjustments to run every login to ensure that any updated
 #   apps don't revert the customizations.
@@ -296,7 +295,7 @@ if [[ -x /usr/bin/nautilus ]]; then
     value="false"
     sudo --user=$CURR_USER --set-home dbus-launch gsettings set "$key_path" "$key" "$value" || true;
 fi
-
+script_exit 0
 # Set Nemo preferences.
 if [[ -x /usr/bin/nemo ]]; then
     # Ensure Nemo not showing hidden files (power users may be annoyed)
@@ -492,6 +491,7 @@ esac
 # ------------------------------------------------------------------------------
 # Processing based on current session
 # ------------------------------------------------------------------------------
+log_msg 'debug' "Adjustments for current session started..."
 #case "$CURR_SESSION" in
 #cinnamon)
 #    # ==========================================================================
@@ -1164,7 +1164,7 @@ echo $CURR_SESSION > $PREV_SESSION_FILE
 # ------------------------------------------------------------------------------
 # FINISHED
 # ------------------------------------------------------------------------------
-
+log_msg 'debug' "Cleaning up..."
 #if [ $DEBUG ];
 #then
 #    if [ -x /usr/bin/nemo ];
@@ -1268,5 +1268,4 @@ chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.dbus/
 #then
 #    echo "$(date) exiting wasta-login" | tee -a $LOGFILE
 #fi
-
-exit 0
+script_exit 0
