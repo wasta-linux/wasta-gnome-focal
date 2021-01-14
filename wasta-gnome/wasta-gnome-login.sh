@@ -24,8 +24,13 @@ fi
 # Get current user and session name (can't depend on env at lightdm login).
 if [[ $DM == 'gdm3' ]]; then
     CURR_USER=$USERNAME
-    CURR_SESSION=$GDMSESSION
-    printenv
+    #GDMSESSION not yet set at PostLogin nor at PreSession
+    session_cmd=$(journalctl | grep '/usr/bin/gnome-session' | tail -n1)
+    # <time> <hostname> gdm-password] [<pid>]: GdmSessionWorker: \
+    #   start program: /usr/lib/gdm3/gdm-x-session --run-script \
+    #   "env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu"
+    pat='s/.*--session=(.*)"/\1/'
+    CURR_SESSION=$(echo $session_cmd | sed -r "$pat")
 elif [[ $DM == 'lightdm' ]]; then
     CURR_USER=$(grep -a "User .* authorized" /var/log/lightdm/lightdm.log | \
         tail -1 | sed 's@.*User \(.*\) authorized@\1@')
@@ -46,7 +51,7 @@ echo "WGL: $(date)" | tee -a "$LOG"
 echo "WGL: Using $DM" | tee -a "$LOG"
 echo "WGL: Current Session: $CURR_SESSION" | tail -a "$LOG"
 echo "WGL: Current User: $CURR_USER" | tail -a "$LOG"
-
+exit 0
 # Reset ...app-folders folder-children if it's currently set as ['Utilities', 'YaST']
 key_path='org.gnome.desktop.app-folders'
 key='folder-children'
