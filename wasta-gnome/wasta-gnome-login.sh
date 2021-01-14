@@ -172,18 +172,17 @@ if [[ -x /usr/bin/gnome-shell ]]; then
     key="picture-uri"
     GNOME_BG_URL=$(sudo --user=$CURR_USER --set-home dbus-launch gsettings get "$key_path" "$key" || true;)
     GNOME_BG=$(urldecode $GNOME_BG_URL)
-    echo "WGL-DEBUG: User's custom gnome background: $GNOME_BG"
+    echo "WGL-DEBUG: User's gnome background: $GNOME_BG"
     echo "WGL-DEBUG: dbus-daemon pids: $(pidof dbus-daemon)"
 fi
-script_exit 0
+
 AS_FILE="/var/lib/AccountsService/users/$CURR_USER"
-#TODO: Does gdm3 use the AS_FILE?
 if [[ -e "$AS_FILE" ]]; then
     # Lightdm 1.26 uses a more standardized syntax for storing user backgrounds.
     #   Since individual desktops would need to re-work how to set user backgrounds
     #   for use by lightdm we are doing it manually here to ensure compatiblity
     #   for all desktops
-    if ! [[ $(grep "BackgroundFile=" $AS_FILE) ]]; then
+    if [[ ! $(grep "BackgroundFile=" $AS_FILE) ]]; then
         # Error, so BackgroundFile needs to be added to AS_FILE
         echo  >> $AS_FILE
         echo "[org.freedesktop.DisplayManager.AccountsService]" >> $AS_FILE
@@ -191,8 +190,9 @@ if [[ -e "$AS_FILE" ]]; then
     fi
     # Retrieve current AccountsService user background
     AS_BG=$(sed -n "s@BackgroundFile=@@p" $AS_FILE)
+    echo "WGL-DEBUG: Found background in AccountsService file: $AS_BG"
 fi
-
+script_exit 0
 #if [[ -x /usr/bin/xfce4-session ]]; then
 #    XFCE_DEFAULT_SETTINGS="/etc/xdg/xdg-xfce/xfce4/"
 #    XFCE_SETTINGS="/home/$CURR_USER/.config/xfce4/"
