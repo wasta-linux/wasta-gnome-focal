@@ -24,7 +24,7 @@ fi
 # Get current user and session name (can't depend on env at lightdm login).
 if [[ $DM == 'gdm3' ]]; then
     CURR_USER=$USERNAME
-    #GDMSESSION not yet set at PostLogin nor at PreSession
+    #GDMSESSION not already set at PostLogin nor at PreSession.
     session_cmd=$(journalctl | grep '/usr/bin/gnome-session' | tail -n1)
     # <time> <hostname> gdm-password] [<pid>]: GdmSessionWorker: \
     #   start program: /usr/lib/gdm3/gdm-x-session --run-script \
@@ -39,7 +39,6 @@ elif [[ $DM == 'lightdm' ]]; then
 fi
 
 # Exit if not wasta-gnome or ubuntu session.
-# TODO: 'ubuntu' is returned but somehow doesn't pass this test...
 if [[ $CURR_SESSION != wasta-gnome ]] \
     && [[ $CURR_SESSION != ubuntu ]] \
     && [[ $CURR_SESSION != ubuntu-wayland ]]; then
@@ -48,11 +47,12 @@ if [[ $CURR_SESSION != wasta-gnome ]] \
     exit 0
 fi
 
+# Write initial log entries.
 echo "WGL: $(date)" | tee -a "$LOG"
 echo "WGL: Using $DM" | tee -a "$LOG"
 echo "WGL: Current Session: $CURR_SESSION" | tail -a "$LOG"
 echo "WGL: Current User: $CURR_USER" | tail -a "$LOG"
-exit 0
+
 # Reset ...app-folders folder-children if it's currently set as ['Utilities', 'YaST']
 key_path='org.gnome.desktop.app-folders'
 key='folder-children'
