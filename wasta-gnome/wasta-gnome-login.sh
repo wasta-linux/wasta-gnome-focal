@@ -295,7 +295,7 @@ if [[ -x /usr/bin/nautilus ]]; then
     value="false"
     sudo --user=$CURR_USER --set-home dbus-launch gsettings set "$key_path" "$key" "$value" || true;
 fi
-script_exit 0
+
 # Set Nemo preferences.
 if [[ -x /usr/bin/nemo ]]; then
     # Ensure Nemo not showing hidden files (power users may be annoyed)
@@ -442,6 +442,7 @@ ubuntu|ubuntu-xorg|gnome|gnome-flashback-metacity|gnome-flashback-compiz|wasta-g
     NEW_AS_BG=$(echo "$GNOME_BG" | sed "s@file://@@")
     if [[ -e $AS_FILE ]] && [[ "$AS_BG" != "$NEW_AS_BG" ]]; then
         sed -i -e "s@\(BackgroundFile=\).*@\1$NEW_AS_BG@" $AS_FILE
+        log_msg 'debug' "Background path saved to $AS_FILE"
     fi
 ;;
 
@@ -479,11 +480,8 @@ ubuntu|ubuntu-xorg|gnome|gnome-flashback-metacity|gnome-flashback-compiz|wasta-g
 
 *)
     # $PREV_SESSION unknown
-    #if [ $DEBUG ];
-    #then
-    #    echo "Unsupported previous session: $PREV_SESSION" | tee -a $LOGFILE
-    #    echo "Session NOT sync'd to other sessions" | tee -a $LOGFILE
-    #fi
+    log_msg 'debug' "Unsupported previous session: $PREV_SESSION"
+    log_msg 'debug' "Session NOT sync'd to other sessions."
 ;;
 
 esac
@@ -713,6 +711,7 @@ non_gnome_apps=(
     thunar.desktop
     thunar-settings.desktop
 )
+log_msg 'debug' "Hiding non-GNOME apps from the desktop user..."
 for app in $non_gnome_apps; do
     if [[ -e /usr/share/applications/$app ]]; then
         desktop-file-edit --set-key=NoDisplay --set-value=true /usr/share/applications/$app || true;
@@ -733,11 +732,8 @@ if [[ -x /usr/bin/nemo ]]; then
 
     # Nemo may be active: kill (will not error if not found)
     if [[ "$(pidof nemo-desktop)" ]]; then
-        #if [ $DEBUG ];
-        #then
-        #    echo "nemo-desktop running (MID) and needs killed: $(pidof nemo-desktop)" | tee -a $LOGFILE
-        #fi
-        killall nemo-desktop | tee -a $LOGFILE
+        log_msg 'debug' "killing old nemo-desktop process: $(pidof nemo-desktop)"
+        killall nemo-desktop
     fi
 fi
 
@@ -753,10 +749,7 @@ fi
 
 # DISABLE cinnamon-screensaver
 if [[ -e /usr/share/dbus-1/services/org.cinnamon.ScreenSaver.service ]]; then
-    #if [ $DEBUG ];
-    #then
-    #    echo "disabling cinnamon-screensaver for gnome/ubuntu session" | tee -a $LOGFILE
-    #fi
+    log_msg 'debug' "Disabling cinnamon-screensaver for gnome/ubuntu session."
     mv /usr/share/dbus-1/services/org.cinnamon.ScreenSaver.service{,.disabled}
 fi
 
@@ -774,7 +767,7 @@ gnome_apps=(
     nautilus-compare-preferences.desktop
     software-properties-gnome.desktop
 )
-
+log_msg 'debug' "Ensuring that GNOME apps are visible to the desktop user..."
 for app in $gnome_apps; do
     if [[ -e /usr/share/applications/$app ]]; then
         desktop-file-edit --remove-key=NoDisplay /usr/share/applications/$app || true;
@@ -808,6 +801,7 @@ done
 #fi
 
 if [[ -e /usr/share/applications/org.gnome.Nautilus.desktop ]]; then
+    log_msg 'debug' "Making Nautilus adjustments..."
     #desktop-file-edit --remove-key=NoDisplay \
     #    /usr/share/applications/org.gnome.Nautilus.desktop || true;
 
@@ -845,6 +839,7 @@ if [[ -e /usr/share/dbus-1/services/org.freedesktop.Notifications.service.disabl
     #then
     #    echo "enabling notify-osd for gnome/ubuntu session" | tee -a $LOGFILE
     #fi
+    log_msg 'debug' "Enabling notify-osd."
     mv /usr/share/dbus-1/services/org.freedesktop.Notifications.service{.disabled,}
 fi
 
@@ -1157,37 +1152,12 @@ fi
 #esac
 
 # ------------------------------------------------------------------------------
-# SET PREV Session file for user
-# ------------------------------------------------------------------------------
-echo $CURR_SESSION > $PREV_SESSION_FILE
-
-# ------------------------------------------------------------------------------
 # FINISHED
 # ------------------------------------------------------------------------------
 log_msg 'debug' "Cleaning up..."
+
 #if [ $DEBUG ];
 #then
-#    if [ -x /usr/bin/nemo ];
-#    then
-#        if [ "$(pidof nemo-desktop)" ];
-#        then
-#            echo "END: nemo-desktop IS running!" | tee -a $LOGFILE
-#        else
-#            echo "END: nemo-desktop NOT running!" | tee -a $LOGFILE
-#        fi
-#    fi
-#
-#    # NDM: nautilus-desktop not used in focal.
-#    #if [ -x /usr/bin/nautilus ];
-#    #then
-#    #    if [ "$(pidof nautilus-desktop)" ];
-#    #    then
-#    #        echo "END: nautilus-desktop IS running!" | tee -a $LOGFILE
-#    #    else
-#    #        echo "END: nautilus-desktop NOT running!" | tee -a $LOGFILE
-#    #    fi
-#    #fi
-#
 #    echo "final settings:" | tee -a $LOGFILE
 #
 #    if [ -x /usr/bin/cinnamon ];
@@ -1231,7 +1201,7 @@ log_msg 'debug' "Cleaning up..."
 #   will restart what is needed.
 #killall dconf-service
 END_PID_DCONF=$(pidof dconf-service)
-if ! [[ "$PID_DCONF" ]]; then
+if [[ ! "$PID_DCONF" ]]; then
     # no previous DCONF pid so remove all current
     REMOVE_PID_DCONF=$END_PID_DCONF
 else
@@ -1246,26 +1216,24 @@ else
     REMOVE_PID_DBUS=$(echo $END_PID_DBUS | sed -e "s@$PID_DBUS@@")
 fi
 
-#if [ $DEBUG ];
-#then
-#    echo "dconf pid start: $PID_DCONF" | tee -a $LOGFILE
-#    echo "dconf pid end: $END_PID_DCONF" | tee -a $LOGFILE
-#    echo "dconf pid to kill: $REMOVE_PID_DCONF" | tee -a $LOGFILE
-#    echo "dbus pid start: $PID_DBUS" | tee -a $LOGFILE
-#    echo "dbus pid end: $END_PID_DBUS" | tee -a $LOGFILE
-#    echo "dbus pid to kill: $REMOVE_PID_DBUS" | tee -a $LOGFILE
-#fi
+# Debug messages about extraneous pids.
+log_msg 'debug' "dconf: initial pids: $PID_DCONF"
+log_msg 'debug' "dconf: current pids: $END_PID_DCONF"
+log_msg 'debug' "dconf: pids to kill: $REMOVE_PID_DCONF"
+log_msg 'debug' "dbus: initial pids: $PID_DBUS"
+log_msg 'debug' "dbus: current pids: $END_PID_DBUS"
+log_msg 'debug' "dbus: pids to kill: $REMOVE_PID_DBUS"
 
+# Kill extraneous pids.
+log_msg 'debug' "Killing additional dconf processes..."
 kill -9 $REMOVE_PID_DCONF
+log_msg 'debug' "Killing additional dbus-daemon processes..."
 kill -9 $REMOVE_PID_DBUS
 
 # Ensure files correctly owned by user
+log_msg 'debug' "Ensuring user owns \$HOME/.cache, \$HOME/.config, \$HOME/.dbus..."
 chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.cache/
 chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.config/
 chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.dbus/
 
-#if [ $DEBUG ];
-#then
-#    echo "$(date) exiting wasta-login" | tee -a $LOGFILE
-#fi
 script_exit 0
