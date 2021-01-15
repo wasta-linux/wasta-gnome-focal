@@ -77,7 +77,7 @@ if [[ $DM == 'gdm3' ]]; then
     # GdmSessionWorker: Set PAM environment variable: 'DESKTOP_SESSION=ubuntu-wayland'
     # GdmSessionWorker: start program: /usr/lib/gdm3/gdm-wayland-session --run-script \
     #   "env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu"
-    pat='s/.*DESKTOP_SESSION=(.*)"/\1/'
+    pat="s/.*DESKTOP_SESSION=(.*)'/\1/"
     CURR_SESSION=$(echo $session_cmd | sed -r "$pat")
 elif [[ $DM == 'lightdm' ]]; then
     CURR_USER=$(grep -a "User .* authorized" /var/log/lightdm/lightdm.log | \
