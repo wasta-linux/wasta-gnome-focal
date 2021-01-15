@@ -67,6 +67,7 @@ fi
 if [[ $DM == 'gdm3' ]]; then
     CURR_USER=$USERNAME
     # TODO: Need a different way to verify wayland session.
+    log_msg 'debug' "$(printenv)"
     session_cmd=$(journalctl | grep '/usr/bin/gnome-session' | tail -n1)
     # X:
     # GdmSessionWorker: start program: /usr/lib/gdm3/gdm-x-session --run-script \
@@ -151,7 +152,7 @@ log_msg 'debug' "Initial setup started..."
 PREV_SESSION_FILE=/var/log/wasta-multidesktop/$CURR_USER-prev-session
 touch "$PREV_SESSION_FILE"
 PREV_SESSION=$(cat "$PREV_SESSION_FILE")
-log_msg "Current user previous session: $PREV_SESSION"
+log_msg "User's previous session: $PREV_SESSION"
 
 # Now send CURR_SESS to PREV_SESSION_FILE for next run.
 echo "$CURR_SESSION" > "$PREV_SESSION_FILE"
