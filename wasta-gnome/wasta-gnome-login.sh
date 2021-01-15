@@ -67,7 +67,7 @@ fi
 if [[ $DM == 'gdm3' ]]; then
     CURR_USER=$USERNAME
     # TODO: Need a different way to verify wayland session.
-    session_cmd=$(journalctl | grep "GdmSessionWorker: Set PAM environment variable: \'DESKTOP_SESSION\'" | tail -n1)
+    session_cmd=$(journalctl | grep "GdmSessionWorker: Set PAM environment variable: 'DESKTOP_SESSION" | tail -n1)
     log_msg 'debug' "$session_cmd"
     # X:
     # GdmSessionWorker: Set PAM environment variable: 'DESKTOP_SESSION=ubuntu'
