@@ -67,7 +67,6 @@ fi
 if [[ $DM == 'gdm3' ]]; then
     CURR_USER=$USERNAME
     # TODO: Need a different way to verify wayland session.
-    log_msg 'debug' "$(printenv)"
     session_cmd=$(journalctl | grep '/usr/bin/gnome-session' | tail -n1)
     # X:
     # GdmSessionWorker: start program: /usr/lib/gdm3/gdm-x-session --run-script \
@@ -1235,8 +1234,8 @@ kill -9 $REMOVE_PID_DBUS
 
 # Ensure files correctly owned by user
 log_msg 'debug' "Ensuring user owns \$HOME/.cache, \$HOME/.config, \$HOME/.dbus..."
-chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.cache/
-chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.config/
-chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.dbus/
+log_msg 'debug' "$(chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.cache/)"
+log_msg 'debug' "$(chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.config/)"
+log_msg 'debug' "$(chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.dbus/)"
 
 script_exit 0
