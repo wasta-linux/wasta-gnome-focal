@@ -408,7 +408,7 @@ case "$PREV_SESSION" in
 #    fi
 #;;
 
-ubuntu|ubuntu-xorg|gnome|gnome-flashback-metacity|gnome-flashback-compiz|wasta-gnome)
+ubuntu|ubuntu-wayland|ubuntu-xorg|gnome|gnome-flashback-metacity|gnome-flashback-compiz|wasta-gnome)
     # apply GNOME settings to other DEs
     #if [ $DEBUG ];
     #then
@@ -1240,8 +1240,8 @@ kill -9 $REMOVE_PID_DBUS
 
 # Ensure files correctly owned by user
 log_msg 'debug' "Ensuring user owns \$HOME/.cache, \$HOME/.config, \$HOME/.dbus..."
-log_msg 'debug' "$(chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.cache/)"
-log_msg 'debug' "$(chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.config/)"
-log_msg 'debug' "$(chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.dbus/)"
+chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.cache/ 2>/dev/null
+chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.config/ 2>/dev/null
+chown -R $CURR_USER:$CURR_USER /home/$CURR_USER/.dbus/ 2>/dev/null
 
 script_exit 0
