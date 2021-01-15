@@ -92,14 +92,14 @@ if [[ $CURR_SESSION != wasta-gnome ]] \
     && [[ $CURR_SESSION != ubuntu-wayland ]]; then
     log_msg "$(date)"
     log_msg "Session not supported: $CURR_SESSION"
-    script_exit 1
+    script_exit 0
 fi
 
 # Exit if no CURR_USER (shouldn't happen).
 if [[ ! $CURR_USER ]]; then
     log_msg "$(date)"
     log_msg "User not identified."
-    script_exit 1
+    script_exit 0
 fi
 
 # Write initial log entries.
