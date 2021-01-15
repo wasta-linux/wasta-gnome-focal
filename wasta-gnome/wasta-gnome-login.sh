@@ -67,12 +67,14 @@ fi
 if [[ $DM == 'gdm3' ]]; then
     CURR_USER=$USERNAME
     # TODO: Need a different way to verify wayland session.
+    log_msg 'debug' "$(sudo -Hiu test env | grep 'DESKTOP_SESSION')"
     session_cmd=$(journalctl | grep '/usr/bin/gnome-session' | tail -n1)
     # X:
     # GdmSessionWorker: start program: /usr/lib/gdm3/gdm-x-session --run-script \
     #   "env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu"
     # Wayland:
-    # /usr/lib/gdm-wayland-session[<pid>]: dbus-daemon[<pid>]: [session uid=<uid> pid=<pid>] ...
+    # GdmSessionWorker: start program: /usr/lib/gdm3/gdm-wayland-session --run-script \
+    #   "env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu"
     pat='s/.*--session=(.*)"/\1/'
     CURR_SESSION=$(echo $session_cmd | sed -r "$pat")
 elif [[ $DM == 'lightdm' ]]; then
