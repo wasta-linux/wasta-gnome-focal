@@ -2,6 +2,9 @@
 
 # GDM3 requires that this script be named "Default" and placed in:
 #   /etc/gdm3/PostLogin/ or /etc/gdm3/PreSession/
+# This script relies on GDM3 debug log output, so it must be enabled with:
+#   $ sed -i '/^.*Enable=true.*$/Enable=true/' /etc/gdm3/custom.conf
+#   This is done in the postinst script.
 
 START_EPOCH=$(date +%s)
 
@@ -68,7 +71,6 @@ if [[ $DM == 'gdm3' ]]; then
     CURR_USER=$USERNAME
     # TODO: Need a different way to verify wayland session.
     session_cmd=$(journalctl | grep "GdmSessionWorker: Set PAM environment variable: 'DESKTOP_SESSION" | tail -n1)
-    log_msg 'debug' "$session_cmd"
     # X:
     # GdmSessionWorker: Set PAM environment variable: 'DESKTOP_SESSION=ubuntu'
     # GdmSessionWorker: start program: /usr/lib/gdm3/gdm-x-session --run-script \

@@ -38,8 +38,18 @@ DIR=/usr/share/wasta-gnome
 # ------------------------------------------------------------------------------
 # General initial config
 # ------------------------------------------------------------------------------
-# Add Wasta icon to slick-greeter desktop entry.
-cp -l /usr/share/wasta-multidesktop/resources/wl-round-22.png /usr/share/slick-greeter/badges/wasta-gnome.png
+# Add Wasta icon to slick-greeter desktop entry if slick-greeter is installed.
+badges_dir=/usr/share/slick-greeter/badges
+wasta_gnome_badge=/usr/share/slick-greeter/badges/wasta-gnome.png
+if [[ -d $badges_dir ]] && [[ ! -e $wasta_gnome_badge ]]; then
+	cp -l /usr/share/wasta-multidesktop/resources/wl-round-22.png "$wasta_gnome_badge"
+fi
+
+# Enable GDM3 debug logs (to capture session names) if GDM3 is installed.
+gdm_conf=/etc/gdm3/custom.conf
+if [[ -e $gdm_conf ]]; then
+	sed -i '/^.*Enable=true.*$/Enable=true/' "$gdm_conf"
+fi
 
 # Disable gnome-screensaver by default (re-enabled at wasta-gnome session login).
 if [[ -e /usr/share/dbus-1/services/org.gnome.ScreenSaver.service ]]; then
