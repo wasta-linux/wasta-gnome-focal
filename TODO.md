@@ -18,7 +18,7 @@ ls /usr/share/dbus-1/services/org.gnome.ScreenSaver.service
 $ ls /usr/share/dbus-1/services/org.gnome.ScreenSaver.service*
 /usr/share/dbus-1/services/org.gnome.ScreenSaver.service.disabled
 ```
-2. Verify that app-folders get reset if arbitrarily set to "['Utilities', 'YaST']".
+1. Verify that app-folders get reset if arbitrarily set to "['Utilities', 'YaST']".
 ```bash
 # After login:
 $ gsettings set org.gnome.desktop.app-folders folder-children "['Utilities', 'YaST']"
