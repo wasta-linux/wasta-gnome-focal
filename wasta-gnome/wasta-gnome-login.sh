@@ -2,8 +2,10 @@
 
 # GDM3 requires that this script be named "Default" and placed in:
 #   /etc/gdm3/PostLogin/ or /etc/gdm3/PreSession/
-# This script relies on GDM3 debug log output, so it must be enabled with:
-#   $ sed -i '/^.*Enable=true.*$/Enable=true/' /etc/gdm3/custom.conf
+# This script relies on GDM3 debug log output, so it must be enabled in
+#   /etc/gdm3/custom.conf with:
+#       [debug]
+#       Enable=true
 #   This is done in the postinst script.
 
 START_EPOCH=$(date +%s)
@@ -93,14 +95,14 @@ if [[ $CURR_SESSION != wasta-gnome ]] \
     && [[ $CURR_SESSION != ubuntu ]] \
     && [[ $CURR_SESSION != ubuntu-wayland ]]; then
     log_msg "$(date)"
-    log_msg "Session not supported: $CURR_SESSION"
+    log_msg "Current session not supported: $CURR_SESSION"
     script_exit 0
 fi
 
 # Exit if no CURR_USER (shouldn't happen).
 if [[ ! $CURR_USER ]]; then
     log_msg "$(date)"
-    log_msg "User not identified."
+    log_msg "Current user not identified."
     script_exit 0
 fi
 
@@ -127,7 +129,7 @@ if [[ $DM == 'lightdm' ]]; then
         log_msg "Enabled gnome-screensaver."
     else
         # gnome-screensaver not previously disabled at login.
-        log_msg "gnome-screensaver not disabled prior to lightdm login"
+        log_msg "gnome-screensaver not disabled prior to lightdm login."
     fi
     script_exit 0
 fi
@@ -144,7 +146,6 @@ fi
 #   - kill off extraneous dbus-daemon processes launched by this script.
 
 # From this point on the script makes the following assumptions:
-#   - wasta-multidesktop is not installed
 #   - display-manager is gdm3 rather than lightdm
 
 
