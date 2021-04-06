@@ -44,6 +44,13 @@ echo "lightdm shared/default-x-display-manager select gdm3" \
     | debconf-set-selections
 echo "gdm3 shared/default-x-display-manager select gdm3" \
     | debconf-set-selections
+# Determine current display manager.
+dm=$(systemctl status display-manager.service | grep 'Main PID:' | awk -F'(' '{print $2}')
+# Get rid of 2nd parenthesis.
+dm="${dm::-1}"
+if [[ $dm == 'lightdm' ]]; then
+	dpkg-reconfigure lightdm
+fi
 
 # Set GDM3 default config.
 if [[ -e /etc/gdm3 ]]; then
