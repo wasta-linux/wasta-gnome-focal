@@ -9,6 +9,7 @@ Homepage: https://github.com/wasta-linux/wasta-gnome-focal
 Package: wasta-gnome-focal
 Architecture: all
 Depends: filemanager-actions,
+ gdm3,
  gnome-screensaver,
  gnome-shell,
  gnome-shell-extension-desktop-icons,
@@ -19,7 +20,7 @@ Depends: filemanager-actions,
  wasta-backgrounds,
  wasta-core-focal,
  wasta-resources,
- wasta-multidesktop-focal | gdm3,
+ wasta-multidesktop-focal,
  wasta-papirus,
  ${misc:Depends}
 Recommends: bookletimposer, wasta-vertex-ubuntu

@@ -38,6 +38,13 @@ DIR=/usr/share/wasta-gnome
 # ------------------------------------------------------------------------------
 # General initial config
 # ------------------------------------------------------------------------------
+
+# Set GDM3 as display manager.
+echo "lightdm shared/default-x-display-manager select gdm3" \
+    | debconf-set-selections
+echo "gdm3 shared/default-x-display-manager select gdm3" \
+    | debconf-set-selections
+
 # Add Wasta icon to slick-greeter desktop entry if slick-greeter is installed.
 badges_dir=/usr/share/slick-greeter/badges
 wasta_gnome_badge=/usr/share/slick-greeter/badges/wasta-gnome.png
