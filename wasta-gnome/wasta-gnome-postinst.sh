@@ -45,32 +45,39 @@ echo "lightdm shared/default-x-display-manager select gdm3" \
 echo "gdm3 shared/default-x-display-manager select gdm3" \
     | debconf-set-selections
 
-# Add Wasta logo to GDM3 greeter.
-#	Ref: https://wiki.debian.org/GDM
-gdm_greeter_conf=/etc/gdm3/greeter.dconf-defaults
-if [[ ! -e ${gdm_greeter_conf}.orig ]]; then
-	mv $gdm_greeter_conf{,.orig}
-fi
-cat > $gdm_greeter_conf << EOF
+# Set GDM3 default config.
+if [[ -e /etc/gdm3 ]]; then
+	# Enable GDM3 debug logs (to capture session names.
+	gdm_custom_conf=/etc/gdm3/custom.conf
+	if [[ ! -e ${gdm_custom_conf}.orig ]]; then
+		mv $gdm_custom_conf{,.orig}
+	fi
+	cat > $gdm_custom_conf << EOF
+[debug]
+Enable=true
+EOF
+
+	# Add Wasta logo to GDM3 greeter.
+	gdm_greeter_conf=/etc/gdm3/greeter.dconf-defaults
+	if [[ ! -e ${gdm_greeter_conf}.orig ]]; then
+		mv $gdm_greeter_conf{,.orig}
+	fi
+	#	Ref: https://wiki.debian.org/GDM
+	cat > $gdm_greeter_conf << EOF
 [org/gnome/login-screen]
 logo='/usr/share/plymouth/themes/wasta-logo/wasta-linux.png'
 EOF
 
-# Change GDM3 greeter background color.
-#	Ref: https://github.com/thiggy01/change-gdm-background/blob/master/change-gdm-background
-/usr/share/wasta-gnome/change-gdm3-background.sh '#3C3C3C'
+	# Change GDM3 greeter background color.
+	#	Ref: https://github.com/thiggy01/change-gdm-background/blob/master/change-gdm-background
+	/usr/share/wasta-gnome/change-gdm3-background.sh '#3C3C3C'
+fi
 
 # Add Wasta icon to slick-greeter desktop entry if slick-greeter is installed.
 badges_dir=/usr/share/slick-greeter/badges
 wasta_gnome_badge=/usr/share/slick-greeter/badges/wasta-gnome.png
 if [[ -d $badges_dir ]] && [[ ! -e $wasta_gnome_badge ]]; then
 	cp -l /usr/share/wasta-multidesktop/resources/wl-round-22.png "$wasta_gnome_badge"
-fi
-
-# Enable GDM3 debug logs (to capture session names) if GDM3 is installed.
-gdm_conf=/etc/gdm3/custom.conf
-if [[ -e $gdm_conf ]]; then
-	sed -i '/^.*Enable=true.*$/Enable=true/' "$gdm_conf"
 fi
 
 # Disable gnome-screensaver by default (re-enabled at wasta-gnome session login).
