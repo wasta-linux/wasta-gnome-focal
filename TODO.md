@@ -1,3 +1,4 @@
+- [ ] Ensure that login and logout scripts get properly run.
 - [ ] Test using "runuser $USER -- command..." instead of "sudo --user=$USER -H command..."
   - It works, but is it worth pushing another update just for that?
 - [x] Reset app-folders folder-children:
