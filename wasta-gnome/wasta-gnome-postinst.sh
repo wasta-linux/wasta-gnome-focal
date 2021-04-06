@@ -45,6 +45,21 @@ echo "lightdm shared/default-x-display-manager select gdm3" \
 echo "gdm3 shared/default-x-display-manager select gdm3" \
     | debconf-set-selections
 
+# Add Wasta logo to GDM3 greeter.
+#	Ref: https://wiki.debian.org/GDM
+gdm_greeter_conf=/etc/gdm3/greeter.dconf-defaults
+if [[ ! -e ${gdm_greeter_conf}.orig ]]; then
+	mv $gdm_greeter_conf{,.orig}
+fi
+cat <<< EOF > $gdm_greeter_conf
+[org/gnome/login-screen]
+logo='/usr/share/plymouth/themes/wasta-logo/wasta-linux.png'
+EOF
+
+# Change GDM3 greeter background color.
+#	Ref: https://github.com/thiggy01/change-gdm-background/blob/master/change-gdm-background
+/usr/share/wasta-gnome/change-gdm3-background.sh '#666666'
+
 # Add Wasta icon to slick-greeter desktop entry if slick-greeter is installed.
 badges_dir=/usr/share/slick-greeter/badges
 wasta_gnome_badge=/usr/share/slick-greeter/badges/wasta-gnome.png
