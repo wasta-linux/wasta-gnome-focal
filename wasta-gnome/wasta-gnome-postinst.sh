@@ -51,7 +51,7 @@ gdm_greeter_conf=/etc/gdm3/greeter.dconf-defaults
 if [[ ! -e ${gdm_greeter_conf}.orig ]]; then
 	mv $gdm_greeter_conf{,.orig}
 fi
-cat <<< EOF > $gdm_greeter_conf
+cat << EOF > $gdm_greeter_conf
 [org/gnome/login-screen]
 logo='/usr/share/plymouth/themes/wasta-logo/wasta-linux.png'
 EOF
