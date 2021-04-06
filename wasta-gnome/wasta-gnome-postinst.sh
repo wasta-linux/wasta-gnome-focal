@@ -58,7 +58,7 @@ EOF
 
 # Change GDM3 greeter background color.
 #	Ref: https://github.com/thiggy01/change-gdm-background/blob/master/change-gdm-background
-/usr/share/wasta-gnome/change-gdm3-background.sh '#666666'
+/usr/share/wasta-gnome/change-gdm3-background.sh '#3C3C3C'
 
 # Add Wasta icon to slick-greeter desktop entry if slick-greeter is installed.
 badges_dir=/usr/share/slick-greeter/badges
