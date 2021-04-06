@@ -39,7 +39,7 @@ DIR=/usr/share/wasta-gnome
 # General initial config
 # ------------------------------------------------------------------------------
 
-# Set GDM3 as display manager.
+# Set GDM3 as default display manager.
 echo "lightdm shared/default-x-display-manager select gdm3" \
     | debconf-set-selections
 echo "gdm3 shared/default-x-display-manager select gdm3" \
@@ -71,6 +71,14 @@ EOF
 	# Change GDM3 greeter background color.
 	#	Ref: https://github.com/thiggy01/change-gdm-background/blob/master/change-gdm-background
 	/usr/share/wasta-gnome/change-gdm3-background.sh '#3C3C3C'
+
+	# Copy wasta-gnome-login-wrapper.sh to GDM3 PostLogin/Default.
+	gdm_default=/etc/gdm3/PostLogin/Default
+	if [[ -e $gdm_default ]]; then
+		# Have to remove already-linked previous version before copying new version.
+		rm $gdm_default
+	fi
+	cp -l "${DIR}/wasta-gnome-login-wrapper.sh" /etc/gdm3/PostLogin/Default
 fi
 
 # Add Wasta icon to slick-greeter desktop entry if slick-greeter is installed.
