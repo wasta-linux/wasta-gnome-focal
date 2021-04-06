@@ -112,6 +112,11 @@ log_msg "Using $DM"
 log_msg "Current session: $CURR_SESSION"
 log_msg "Current user: $CURR_USER"
 
+# Get initial dconf and dbus pids.
+PID_DCONF=$(pidof dconf-service)
+PID_DBUS=$(pidof dbus-daemon)
+log_msg 'debug' "Initial pids: dconf-service: $PID_DCONF; dbus-daemon: $PID_DBUS"
+
 # Reset ...app-folders folder-children if it's currently set as ['Utilities', 'YaST']
 key_path='org.gnome.desktop.app-folders'
 key='folder-children'
@@ -122,6 +127,37 @@ if [[ $curr_children = "['Utilities', 'YaST']" ]] || \
     log_msg "Reset gsettings $key_path $key"
 fi
 
+# Kill dconf & dbus processes that were started by this script.
+END_PID_DCONF=$(pidof dconf-service)
+if [[ ! "$PID_DCONF" ]]; then
+    # no previous DCONF pid so remove all current
+    REMOVE_PID_DCONF=$END_PID_DCONF
+else
+    REMOVE_PID_DCONF=$(echo $END_PID_DCONF | sed -e "s@$PID_DCONF@@")
+fi
+
+END_PID_DBUS=$(pidof dbus-daemon)
+if ! [[ "$PID_DBUS" ]]; then
+    # no previous DBUS pid so remove all current
+    REMOVE_PID_DBUS=$END_PID_DBUS
+else
+    REMOVE_PID_DBUS=$(echo $END_PID_DBUS | sed -e "s@$PID_DBUS@@")
+fi
+
+# Debug messages about extraneous pids.
+log_msg 'debug' "dconf: initial pids: $PID_DCONF"
+log_msg 'debug' "dconf: current pids: $END_PID_DCONF"
+log_msg 'debug' "dconf: pids to kill: $REMOVE_PID_DCONF"
+log_msg 'debug' "dbus: initial pids: $PID_DBUS"
+log_msg 'debug' "dbus: current pids: $END_PID_DBUS"
+log_msg 'debug' "dbus: pids to kill: $REMOVE_PID_DBUS"
+
+# Kill extraneous pids.
+log_msg 'debug' "Killing additional dconf processes..."
+kill -9 $REMOVE_PID_DCONF
+log_msg 'debug' "Killing additional dbus-daemon processes..."
+kill -9 $REMOVE_PID_DBUS
+
 # Make adjustments if using lightdm and exit.
 if [[ $DM == 'lightdm' ]]; then
     if [[ -e /usr/share/dbus-1/services/org.gnome.ScreenSaver.service.disabled ]]; then
@@ -129,10 +165,12 @@ if [[ $DM == 'lightdm' ]]; then
         log_msg "Enabled gnome-screensaver."
     else
         # gnome-screensaver not previously disabled at login.
-        log_msg "gnome-screensaver not disabled prior to lightdm login."
+        log_msg "gnome-screensaver already enabled prior to lightdm login."
     fi
     script_exit 0
 fi
+
+script_exit 0
 
 # Incorporating additional items from wasta-login so as not to depend on wasta-multidesktop:
 #   - ensure that background image is carried over from cinnamon (TODO: what about ubuntu?)
