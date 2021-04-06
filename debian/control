@@ -16,12 +16,7 @@ Depends: filemanager-actions,
  nautilus,
  nautilus-actions,
  nautilus-image-converter,
- papirus-icon-theme,
- wasta-backgrounds,
- wasta-core-focal,
- wasta-resources,
  wasta-multidesktop-focal,
- wasta-papirus,
  ${misc:Depends}
 Recommends: bookletimposer, wasta-vertex-ubuntu
 Description: Wasta-Linux GNOME for Ubuntu 20.04 Focal
