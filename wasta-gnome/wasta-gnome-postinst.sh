@@ -40,10 +40,11 @@ DIR=/usr/share/wasta-gnome
 # ------------------------------------------------------------------------------
 
 # Set GDM3 as default display manager.
-echo "lightdm shared/default-x-display-manager select gdm3" \
-    | debconf-set-selections
-echo "gdm3 shared/default-x-display-manager select gdm3" \
-    | debconf-set-selections
+#echo "lightdm shared/default-x-display-manager select gdm3" \
+#    | debconf-set-selections
+#echo "gdm3 shared/default-x-display-manager select gdm3" \
+#    | debconf-set-selections
+
 # Determine current display manager.
 dm=$(systemctl status display-manager.service | grep 'Main PID:' | awk -F'(' '{print $2}')
 # Get rid of 2nd parenthesis.
