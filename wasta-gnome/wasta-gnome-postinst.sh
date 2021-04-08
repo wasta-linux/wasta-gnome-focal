@@ -85,7 +85,9 @@ EOF
 		# Have to remove already-linked previous version before copying new version.
 		rm $gdm_default
 	fi
-	cp -l "${DIR}/wasta-gnome-login-wrapper.sh" /etc/gdm3/PostLogin/Default
+	#cp -l "${DIR}/wasta-gnome-login-wrapper.sh" /etc/gdm3/PostLogin/Default
+	wasta_login=/usr/share/wasta-multidesktop/scripts/wasta-login.sh
+	cp -l "$wasta_login" /etc/gdm3/PostLogin/Default
 fi
 
 # Add Wasta icon to slick-greeter desktop entry if slick-greeter is installed.
