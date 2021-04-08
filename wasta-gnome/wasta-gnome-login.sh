@@ -56,19 +56,22 @@ mkdir -p '/var/log/wasta-multidesktop'
 touch "$LOG"
 
 # Determine display manager.
-dm_pre=$(systemctl status display-manager.service | grep 'Main PID:' | awk -F'(' '{print $2}')
+curr_dm=$(systemctl status display-manager.service | grep 'Main PID:' | awk -F'(' '{print $2}')
 # Get rid of 2nd parenthesis.
-dm_pre="${dm_pre::-1}"
-if [[ $dm_pre == 'lightdm' ]] || [[ $dm_pre == 'gdm3' ]]; then
-    DM=$dm_pre
+curr_dm="${curr_dm::-1}"
+supported_dms="gdm3 lightdm"
+if [[ $(echo $supported_dms | grep -w $curr_dm) ]]; then
+#if [[ $dm_pre == 'lightdm' ]] || [[ $dm_pre == 'gdm3' ]]; then
+    DM=$curr_dm
 else
     # Unsupported display manager!
     log_msg "$(date)"
-    log_msg "Error: Display manager \"$dm_pre\" not supported."
-    script_exit 1
+    log_msg "Error: Display manager \"$curr_dm\" not supported."
+    # Exit with code 0 so that login can continue.
+    script_exit 0
 fi
 
-# Get current user and session name (can't depend on env at lightdm login).
+# Get current user and session name (can't depend on env at login).
 if [[ $DM == 'gdm3' ]]; then
     CURR_USER=$USERNAME
     # TODO: Need a different way to verify wayland session.
@@ -91,11 +94,15 @@ elif [[ $DM == 'lightdm' ]]; then
 fi
 
 # Exit if not wasta-gnome or ubuntu session.
-if [[ $CURR_SESSION != wasta-gnome ]] \
-    && [[ $CURR_SESSION != ubuntu ]] \
-    && [[ $CURR_SESSION != ubuntu-wayland ]]; then
+supported_sess="ubuntu ubuntu-wayland wasta-gnome"
+if [[ -z $CURR_SESSION ]] || [[ ! $(echo $supported_sess | grep -w $CURR_SESSION) ]]; then
+#if [[ $CURR_SESSION != wasta-gnome ]] \
+#    && [[ $CURR_SESSION != ubuntu ]] \
+#    && [[ $CURR_SESSION != ubuntu-wayland ]]; then
+#    && [[ $CURR_SESSION != cinnamon ]]; then
     log_msg "$(date)"
     log_msg "Current session not supported: $CURR_SESSION"
+    # Exit with code 0 so that login can continue.
     script_exit 0
 fi
 
@@ -103,6 +110,7 @@ fi
 if [[ ! $CURR_USER ]]; then
     log_msg "$(date)"
     log_msg "Current user not identified."
+    # Exit with code 0 so that login can continue.
     script_exit 0
 fi
 
@@ -111,6 +119,14 @@ log_msg "$(date)"
 log_msg "Using $DM"
 log_msg "Current session: $CURR_SESSION"
 log_msg "Current user: $CURR_USER"
+
+# Get user's previous session.
+PREV_SESSION_FILE=/var/log/wasta-multidesktop/$CURR_USER-prev-session
+touch "$PREV_SESSION_FILE"
+PREV_SESSION=$(cat "$PREV_SESSION_FILE")
+log_msg "User's previous session: $PREV_SESSION"
+# Send CURR_SESSION to PREV_SESSION_FILE for next run.
+echo "$CURR_SESSION" > "$PREV_SESSION_FILE"
 
 # Get initial dconf and dbus pids.
 PID_DCONF=$(pidof dconf-service)
@@ -167,7 +183,6 @@ if [[ $DM == 'lightdm' ]]; then
         # gnome-screensaver not previously disabled at login.
         log_msg "gnome-screensaver already enabled prior to lightdm login."
     fi
-    script_exit 0
 fi
 
 script_exit 0
