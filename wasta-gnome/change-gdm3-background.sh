@@ -96,19 +96,8 @@ if [ "$?" -eq 0 ]; then
 # Solve a permission change issue (thanks to @huepf from github).
     chmod 644 "$gdm3Resource"
     echo 'GDM background sucessfully changed.'
-    #echo "Restarting display-manager.service."
-    #systemctl restart display-manager.service
     # Require reboot to ensure gdm3 is eventually restarted.
     echo "*** System restart required ***" > /var/run/reboot-required
-    #read -p 'Do you want to restart gdm to apply change? (y/n):' -n 1
-    #echo
-    # If change was successful apply ask for gdm restart.
-    #if [[ "$REPLY" =~ ^[yY]$ ]]; then
-	#service gdm restart
-    #else
-	#echo "Change will be applied only after restarting gdm"
-	#echo
-    #fi
 else
     # If something went wrong, restore backup file.
     echo 'Something went wrong.'
