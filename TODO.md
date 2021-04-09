@@ -1,5 +1,6 @@
-- [ ] Ensure that login and logout scripts get properly run.
-- [ ] Test using "runuser $USER -- command..." instead of "sudo --user=$USER -H command..."
+- [ ] Fix "Esc" not working to close Overview.
+- [x] Ensure that wasta-login.sh script gets properly run.
+- [x] Test using "runuser -u $USER -- command..." instead of "sudo --user=$USER -H command..."
   - It works, but is it worth pushing another update just for that?
 - [x] Reset app-folders folder-children:
     - need to check for "Utilities", "Sundry", and "YaST"
@@ -28,3 +29,4 @@ $ gnome-session-quit --logout
 $ gesttings get org.gnome.desktop.app-folders folder-children
 ['Graphics', 'AudioVideo', 'Network', 'Office', 'Development', 'System', 'Settings', 'Utility', 'Game', 'Education', 'Wasta']
 ```
+1. Verify that gsettings changes get propagated.
