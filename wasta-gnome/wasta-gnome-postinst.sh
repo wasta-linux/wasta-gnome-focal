@@ -39,20 +39,6 @@ DIR=/usr/share/wasta-gnome
 # General initial config
 # ------------------------------------------------------------------------------
 
-# Set GDM3 as default display manager.
-#echo "lightdm shared/default-x-display-manager select gdm3" \
-#    | debconf-set-selections
-#echo "gdm3 shared/default-x-display-manager select gdm3" \
-#    | debconf-set-selections
-
-# Determine current display manager.
-#dm=$(systemctl status display-manager.service | grep 'Main PID:' | awk -F'(' '{print $2}')
-# Get rid of 2nd parenthesis.
-#dm="${dm::-1}"
-#if [[ $dm == 'lightdm' ]]; then
-#	dpkg-reconfigure lightdm
-#fi
-
 # Set GDM3 default config.
 if [[ -e /etc/gdm3 ]]; then
 	# Enable GDM3 debug logs (to capture session names).
@@ -80,13 +66,12 @@ EOF
 	#	Ref: https://github.com/thiggy01/change-gdm-background/blob/master/change-gdm-background
 	/usr/share/wasta-gnome/change-gdm3-background.sh '#3C3C3C'
 
-	# Copy wasta-gnome-login-wrapper.sh to GDM3 PostLogin/Default.
+	# Copy wasta-login.sh to GDM3 PostLogin/Default.
 	gdm_default=/etc/gdm3/PostLogin/Default
 	if [[ -e $gdm_default ]]; then
 		# Have to remove already-linked previous version before copying new version.
 		rm $gdm_default
 	fi
-	#cp -l "${DIR}/wasta-gnome-login-wrapper.sh" /etc/gdm3/PostLogin/Default
 	wasta_login=/usr/share/wasta-multidesktop/scripts/wasta-login.sh
 	cp -l "$wasta_login" /etc/gdm3/PostLogin/Default
 fi
@@ -133,8 +118,8 @@ glib-compile-schemas /usr/share/glib-2.0/schemas/ > /dev/null 2>&1 || true;
 echo
 echo "*** Setting initial Nautilus config"
 echo
-# filemanager-actions has no system config file, so
-# copy user config to all existing users' .config folders.
+# filemanager-actions has no system config file, so copy user config to all
+#	existing users' .config folders.
 users=$(find /home/* -maxdepth 0 -type d | cut -d '/' -f3)
 while IFS= read -r user; do
     if [[ $(grep "$user:" /etc/passwd) ]]; then
