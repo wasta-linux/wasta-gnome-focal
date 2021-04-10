@@ -64,7 +64,7 @@ var dtpPanelManager = Utils.defineClass({
 
         this._saveMonitors();
 
-        Main.overview.viewSelector.appDisplay._views.forEach(v => {
+        Utils.getAppDisplayViews().forEach(v => {
             Utils.wrapActor(v.view);
             Utils.wrapActor(v.view._grid);
         });
@@ -198,20 +198,25 @@ var dtpPanelManager = Utils.defineClass({
                 ]
             );
 
-            Main.overview.viewSelector.appDisplay._views.forEach(v => {
-                if (v.control.has_style_pseudo_class('checked')) {
+            Utils.getAppDisplayViews().forEach(v => {
+                if (!v.control || v.control.has_style_pseudo_class('checked')) {
                     currentAppsView = v;
                 }
 
+                if (v.control) {
+                    this._signalsHandler.add(
+                        [
+                            v.control, 
+                            'clicked', 
+                            () => {
+                                this._needsIconAllocate = currentAppsView != v;
+                                currentAppsView = v;
+                            }
+                        ]
+                    );
+                }
+
                 this._signalsHandler.add(
-                    [
-                        v.control, 
-                        'clicked', 
-                        () => {
-                            this._needsIconAllocate = currentAppsView != v;
-                            currentAppsView = v;
-                        }
-                    ],
                     [
                         v.view, 
                         'notify::visible', 
@@ -558,12 +563,13 @@ var dtpPanelManager = Utils.defineClass({
 
         this._workspacesViews.forEach(wv => Main.layoutManager.overviewGroup.add_actor(wv.actor));
 
-        if (Config.PACKAGE_VERSION > '3.36.3') {
+        if (this._syncWorkspacesFullGeometry) {
+            //gnome-shell 3.36.4
             if (this._fullGeometry)
                 this._syncWorkspacesFullGeometry();
             if (this._actualGeometry)
                 this._syncWorkspacesActualGeometry();
-        } else {
+        } else if (this._updateWorkspacesFullGeometry) {
             this._updateWorkspacesFullGeometry();
             this._updateWorkspacesActualGeometry();
         }
@@ -579,7 +585,7 @@ var dtpPanelManager = Utils.defineClass({
         if (this.child == null)
             return;
 
-        this.set_allocation(box, flags);
+        Utils.setAllocation(this, box, flags);
 
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
@@ -595,7 +601,7 @@ var dtpPanelManager = Utils.defineClass({
         childBox.x2 = childBox.x1 + childWidth;
         childBox.y2 = childBox.y1 + childHeight;
 
-        this.child.allocate(childBox, flags);
+        Utils.allocate(this.child, childBox, flags);
     },
 });
 
@@ -662,7 +668,7 @@ function newDoSpringAnimation(animationDirection) {
 
 function newAnimateIconPosition(icon, box, flags, nChangedIcons) {
     if (this._needsIconAllocate) {
-        icon.allocate(box, flags);
+        Utils.allocate(icon, box, flags);
         return;
     }
 
@@ -817,7 +823,7 @@ function newUpdatePanelBarrier(panel) {
 
 function _newLookingGlassResize() {
     let primaryMonitorPanel = Utils.find(global.dashToPanel.panels, p => p.monitor == Main.layoutManager.primaryMonitor);
-    let topOffset = primaryMonitorPanel.getPosition() == St.Side.TOP ? primaryMonitorPanel.size : 32;
+    let topOffset = primaryMonitorPanel.getPosition() == St.Side.TOP ? primaryMonitorPanel.dtpSize + 8 : 32;
 
     this._oldResize();
     Utils.wrapActor(this);

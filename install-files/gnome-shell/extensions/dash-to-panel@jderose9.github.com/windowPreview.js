@@ -24,7 +24,6 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const PopupMenu = imports.ui.popupMenu;
 const Signals = imports.signals;
-const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const WindowManager = imports.ui.windowManager;
 const Workspace = imports.ui.workspace;
@@ -325,7 +324,7 @@ var PreviewMenu = Utils.defineClass({
         let l = Math.max(windows.length, currentPreviews.length);
 
         for (let i = 0; i < l; ++i) {
-            if (currentPreviews[i] && windows[i] && windows[i] != currentPreviews[i].window) {
+            if (currentPreviews[i] && windows[i]) {
                 currentPreviews[i].assignWindow(windows[i], this.opened);
             } else if (!currentPreviews[i]) {
                 this._addNewPreview(windows[i]);
@@ -346,7 +345,6 @@ var PreviewMenu = Utils.defineClass({
             if (currentIndex < 0) {
                 this._addNewPreview(windows[i]);
             } else {
-                currentPreviews[currentIndex].cancelAnimateOut();
                 currentPreviews[currentIndex].assignWindow(windows[i]);
                 currentPreviews.splice(currentIndex, 1);
 
@@ -465,7 +463,7 @@ var PreviewMenu = Utils.defineClass({
     _updatePosition: function() {
         let sourceNode = this.currentAppIcon.actor.get_theme_node();
         let sourceContentBox = sourceNode.get_content_box(this.currentAppIcon.actor.get_allocation_box());
-        let sourceAllocation = Shell.util_get_transformed_allocation(this.currentAppIcon.actor);
+        let sourceAllocation = Utils.getTransformedAllocation(this.currentAppIcon.actor);
         let [previewsWidth, previewsHeight] = this._getPreviewsSize();
         let appIconMargin = Me.settings.get_int('appicon-margin') / scaleFactor;
         let x = 0, y = 0;
@@ -707,7 +705,7 @@ var Preview = Utils.defineClass({
         this._previewDimensions = this._getPreviewDimensions();
         this.animatingOut = false;
 
-        let box = new St.Widget({ layout_manager: new Clutter.BoxLayout({ vertical: true }), y_expand: true });
+        let box = new St.Widget({ layout_manager: new Clutter.BoxLayout({ orientation: Clutter.Orientation.VERTICAL }), y_expand: true });
         let [previewBinWidth, previewBinHeight] = this._getBinSize();
         let closeButton = new St.Button({ style_class: 'window-close', accessible_name: 'Close window' });
 
@@ -819,6 +817,7 @@ var Preview = Utils.defineClass({
             _assignWindowClone();
         }
 
+        this._cancelAnimateOut();
         this._removeWindowSignals();
         this.window = window;
         this._needsCloseButton = window.can_close() && !Utils.checkIfWindowHasTransient(window);
@@ -833,15 +832,6 @@ var Preview = Utils.defineClass({
 
             Utils.stopAnimations(this);
             Utils.animate(this, tweenOpts);
-        }
-    },
-
-    cancelAnimateOut: function() {
-        if (this.animatingOut) {
-            this.animatingOut = false;
-
-            Utils.stopAnimations(this);
-            Utils.animate(this, getTweenOpts({ opacity: 255 }));
         }
     },
 
@@ -884,13 +874,16 @@ var Preview = Utils.defineClass({
     },
 
     _onCloseBtnClick: function() {
-        this.window.delete(global.get_current_time());
         this._hideOrShowCloseButton(true);
         this.reactive = false;
 
         if (!Me.settings.get_boolean('group-apps')) {
             this._previewMenu.close();
+        } else {
+            this._previewMenu.endPeekHere();
         }
+
+        this.window.delete(global.get_current_time());
     },
 
     _onButtonReleaseEvent: function(e) {
@@ -909,6 +902,15 @@ var Preview = Utils.defineClass({
         }
 
         return Clutter.EVENT_STOP;
+    },
+
+    _cancelAnimateOut: function() {
+        if (this.animatingOut) {
+            this.animatingOut = false;
+
+            Utils.stopAnimations(this);
+            Utils.animate(this, getTweenOpts({ opacity: 255, width: this.cloneWidth, height: this.cloneHeight }));
+        }
     },
 
     _showContextMenu: function(e) {
@@ -948,7 +950,9 @@ var Preview = Utils.defineClass({
 
     _updateHeader: function() {
         if (headerHeight) {
-            let iconTextureSize = headerHeight / scaleFactor * .6;
+            let iconTextureSize = Me.settings.get_boolean('window-preview-use-custom-icon-size') ? 
+                                  Me.settings.get_int('window-preview-custom-icon-size') : 
+                                  headerHeight / scaleFactor * .6;
             let icon = this._previewMenu.getCurrentAppIcon().app.create_icon_texture(iconTextureSize);
             let workspaceIndex = '';
             let workspaceStyle = null;
@@ -1125,7 +1129,7 @@ var WindowCloneLayout = Utils.defineClass({
             height + (this.bufferRect.height - this.frameRect.height) * this.ratio
         );
 
-        actor.get_first_child().allocate(box, flags);
+        Utils.allocate(actor.get_first_child(), box, flags);
     }
 });
 
