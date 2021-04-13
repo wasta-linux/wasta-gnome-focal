@@ -1,3 +1,11 @@
+wasta-gnome-focal (0.1.12) focal; urgency=medium
+
+  * Move desktop login code to wasta-multidesktop.
+  * Add support for gdm3.
+  * Update dash-to-panel to v40.
+
+ -- Nate Marti <nate_marti@sil.org>  Tue, 13 Apr 2021 12:46:20 +0100
+
 wasta-gnome-focal (0.1.11) focal; urgency=medium
 
   * Account for errant 'Sundry' category in app-folders.
