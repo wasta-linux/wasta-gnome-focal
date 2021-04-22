@@ -1,5 +1,5 @@
 {
     "parentMode": "user",
     "debugFlags": ["backtrace-crashes-all"],
-    "enabledExtensions": ["appindicatorsupport@rgcjonas.gmail.com", "applications-overview-tooltip@RaphaelRochet", "dash-to-panel@jderose9.github.com", "desktop-icons@csoriano", "drive-menu@gnome-shell-extensions.gcampax.github.com", "panel-osd@berend.de.schouwer.gmail.com"]
+    "enabledExtensions": ["appindicatorsupport@rgcjonas.gmail.com", "applications-overview-tooltip@RaphaelRochet", "dash-to-panel@jderose9.github.com", "desktop-icons@csoriano", "drive-menu@gnome-shell-extensions.gcampax.github.com", "panel-osd@berend.de.schouwer.gmail.com", "windowIsReady_Remover@nunofarruca@gmail.com"]
 }

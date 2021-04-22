@@ -1,4 +1,5 @@
-- [ ] Fix "Esc" not working to close Overview.
+- [x] Add extension to mute "____ is ready" notifications.
+- [x] Fix "Esc" not working to close Overview.
 - [x] Ensure that wasta-login.sh script gets properly run.
 - [x] Test using "runuser -u $USER -- command..." instead of "sudo --user=$USER -H command..."
   - It works, but is it worth pushing another update just for that?
