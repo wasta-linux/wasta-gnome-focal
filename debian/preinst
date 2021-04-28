@@ -6,7 +6,7 @@
 #   - man dh_installdeb(1)
 
 set -e
-
+set -x
 case "$1" in
     install|upgrade)
         # Call main preinst script.  Error in that script should NOT stop
