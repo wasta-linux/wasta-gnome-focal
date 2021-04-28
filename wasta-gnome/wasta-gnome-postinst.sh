@@ -39,14 +39,6 @@ DIR=/usr/share/wasta-gnome
 # General initial config
 # ------------------------------------------------------------------------------
 
-# Auto-select lightdm as display manager if already installed.
-if [[ $(systemctl show display-manager.service | grep Id= | grep lightdm) ]]; then
-	echo "gdm3	shared/default-x-display-manager	select	lightdm" |\
-		debconf-set-selections
-	echo "gdm3	shared/default-x-display-manager seen" |\
-		debconf-set-selections
-fi
-
 # Set GDM3 default config.
 if [[ -e /etc/gdm3 ]]; then
 	# Enable GDM3 debug logs (to capture session names).
