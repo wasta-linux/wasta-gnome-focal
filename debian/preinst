@@ -1,12 +1,14 @@
 #!/bin/sh
 # preinst script for wasta-gnome
 #
-# see: dh_installdeb(1)
+# see:
+#   - man deb-preinst
+#   - man dh_installdeb(1)
 
 set -e
 
 case "$1" in
-    configure)
+    install|upgrade)
         # Call main preinst script.  Error in that script should NOT stop
         #   preinst from completing.  We want to ensure that the package
         #   installs even if the script fails.
@@ -16,7 +18,7 @@ case "$1" in
         bash /usr/share/wasta-gnome/wasta-gnome-preinst.sh
     ;;
 
-    abort-upgrade|abort-remove|abort-deconfigure)
+    abort-upgrade)
     ;;
 
     *)
