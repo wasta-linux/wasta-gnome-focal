@@ -23,6 +23,7 @@ case "$1" in
         	debconf-set-selections
         echo "gdm3	shared/default-x-display-manager seen" |\
         	debconf-set-selections
+        debconf-get-selections | grep gdm3
     ;;
 
     abort-upgrade)
