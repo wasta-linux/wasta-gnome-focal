@@ -33,6 +33,7 @@ folder-children = ['Graphics', 'AudioVideo', 'Network', 'Office', 'Development',
 [org.gnome.desktop.interface:wasta-gnome]
 #gtk-theme = 'Arc-Darker'
 show-battery-percentage = true
+enable-hot-corners = false
 
 [org.gnome.desktop.peripherals.touchpad:wasta-gnome]
 click-method = 'fingers'
@@ -139,4 +140,3 @@ edge-tiling = true
 #overlay-key = ''
 [org.gnome.shell.keybindings:wasta-gnome]
 #toggle-application-view = ['Super_L']
-
